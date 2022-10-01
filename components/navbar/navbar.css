@@ -1,0 +1,10 @@
+.navbar {
+    display: flexbox;
+    background-color: red;
+}
+
+.menu_icon_white {
+    margin: 0.5em;
+    width: 2em;
+    height: 1.5em;
+}
