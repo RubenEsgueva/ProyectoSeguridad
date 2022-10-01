@@ -1,2 +1,2 @@
 sudo xampp start
-firefox "localhost/SistemasWeb/index.php"
+firefox "localhost/ProyectoSeguridad/index.php"
