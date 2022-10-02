@@ -1,4 +1,3 @@
-sudo xampp start
-sudo docker build -t carshow .
-sudo docker run -it --rm --name carshow-running carshow
-#firefox "localhost/SistemasWeb/index.php"
+sudo docker build -t="carshow" .
+sudo docker-compose up
+firefox "http://localhost:81/index.php"

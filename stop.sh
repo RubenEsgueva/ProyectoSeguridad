@@ -1,1 +1,1 @@
-sudo xampp stop
+sudo docker-compose down

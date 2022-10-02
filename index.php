@@ -1,5 +1,12 @@
-<?php session_start(); ?>
-
+<?php
+    include '.env.php';
+    session_start();
+    if (!isset($_SESSION['user_id'])) {
+        header("location: ./src/pages/login/login.php");
+    } else {
+        header("location: ./src/pages/catalogo/catalogo.php");
+    }
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,9 +17,6 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <!--Si no esta registrado-->
-    <a href="http://localhost/SistemasWeb/pages/signin/signin.php">Sign in</a>
-    <!--Si esta registrado-->
-    <a href="http://localhost/SistemasWeb/pages/catalogo/catalogo.php">Catalogo</a>
+    
 </body>
 </html>
