@@ -16,6 +16,32 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `ASIGNACION`
+--
+
+DROP TABLE IF EXISTS `ASIGNACION`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ASIGNACION` (
+  `usuario` varchar(20) NOT NULL,
+  `vehiculo` varchar(10) NOT NULL,
+  PRIMARY KEY (`usuario`,`vehiculo`),
+  KEY `vehiculo` (`vehiculo`),
+  CONSTRAINT `ASIGNACION_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `USUARIO` (`usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `ASIGNACION_ibfk_2` FOREIGN KEY (`vehiculo`) REFERENCES `COCHES` (`matricula`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ASIGNACION`
+--
+
+LOCK TABLES `ASIGNACION` WRITE;
+/*!40000 ALTER TABLE `ASIGNACION` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ASIGNACION` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `COCHES`
 --
 
@@ -30,9 +56,7 @@ CREATE TABLE `COCHES` (
   `kilometraje` int DEFAULT NULL,
   `precio` decimal(10,2) DEFAULT NULL,
   `imagen` varchar(120) DEFAULT NULL,
-  PRIMARY KEY (`matricula`),
-  KEY `usuario` (`usuario`),
-  CONSTRAINT `COCHES_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `USUARIO` (`usuario`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`matricula`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -85,4 +109,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-03 18:05:09
+-- Dump completed on 2022-09-29 21:26:07
