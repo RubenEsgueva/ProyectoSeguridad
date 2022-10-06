@@ -1,0 +1,41 @@
+
+body{
+    margin: 0; /* quitar márgenes por defecto */
+    padding: 0; /* quitar paddings por defecto */
+    box-sizing: border-box; /* para ajustar tamaño de elementos -> el padding y el borde no modifican el tamaño */
+    font-family: sans-serif;
+    background: gray;
+    text-align: center; /* para centrar todos los textos */
+
+    display:  flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.logo {
+    width: 100vw; /* para que ocupe todo el ancho de la pantalla */
+    height: 100px; /* la altura de la imagen, se le puede cambiar */
+    background-image: url("../logo.png"); /* imagen de fondo = logo.png */
+    background-size: cover; /* para que la imagen se redimensione y ocupe todo el espacio (aunque se vea recortada) */
+    background-position: 0 65%; /* la posición de la imagen, en X y en Y. En X es 0 (está centrada) y en Y 65% (0 es arriba, 100 abajo) */
+}
+.menu {
+    background-color: black;
+}
+.menu ul {
+    margin: 0;
+    padding: 15px;
+    /* para centrar los elementos */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.menu ul li {
+    list-style: none; /* para quitarle los puntos antes del "Inicio sesión" y "Registrarse" */
+}
+.social-links {
+    /* para que los links de las redes sociales estén centrados con espacios entre los elementos */
+    display: flex;
+    justify-content: space-around;
+}
