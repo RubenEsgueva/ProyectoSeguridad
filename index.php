@@ -1,10 +1,9 @@
 <?php
-    include '.env.php';
     session_start();
     if (!isset($_SESSION['user_id'])) {
-        header("location: ./src/pages/login/login.php");
+        header("location: /var/www/html/src/pages/login/login.php");
     } else {
-        header("location: ./src/pages/catalogo/catalogo.php");
+        header("location: /var/www/html/src/pages/catalogo/catalogo.php");
     }
 ?>
 <!DOCTYPE html>
