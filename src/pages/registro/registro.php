@@ -14,7 +14,7 @@
 <body>
 	<form action="database/usuarios.php" method="post">
 		<p>Nombre de usuario:</p>
-		<input type="text" class="casilla" name="usr" placeholder="Example404" autofocus><br>
+		<input type="text" class="casilla" name="usr" placeholder="Introduzca su nombre de usuario" autofocus><br>
 		<p>Contraseña:</p>
 		<input type="password" class="casilla" name="pswd" placeholder="Mantén tu contraseña oculta."><br>
 		<p>Confirmar contraseña:</p>
@@ -26,11 +26,11 @@
 		<p>Apellido:</p>
 		<input type="text" class="casilla" name="surname" placeholder="Barinagarrementeria"><br>
 		<p>DNI:</p>
-		<input type="text" class="casilla" name="dni" placeholder="NNNNNNNL"><br>
+		<input type="text" class="casilla" name="dni" placeholder="11111111-Z"><br>
 		<p>Número de teléfono:</p>
 		<input type="text" class="casilla" name="tlf" placeholder="NNNNNNNNN"><br>
 		<p>Fecha de nacimiento:</p>
-		<input type="text" class="casilla" name="bdate" placeholder="DD/MM/YY"><br><br>
+		<input type="text" class="casilla" name="bdate" placeholder="YYYY-MM-DD"><br><br>
 		<input type="submit" class="boton" value="Confirmar">
 	</form>
 </body>
