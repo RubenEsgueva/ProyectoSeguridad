@@ -17,6 +17,7 @@
 <body>
     <?php //include '/var/www/html/src/components/navbar/navbar.php'; ?>
     <?php //include '/var/www/html/src/components/sidebar/sidebar.php'; ?>
+    <h1>Esto es el Catalogo.</h1>
     <form action="/var/www/html/server/close_session.php" method="post">
         <input type="submit" value="Close">
     </form>
