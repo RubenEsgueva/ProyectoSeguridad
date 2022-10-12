@@ -9,7 +9,7 @@ mysql_container_id=$(sudo docker container ls | grep mysql | cut -d " " -f 1)
 sleep 5
 echo "Inicializando la base de datos..."
 sudo systemctl restart mysql > /dev/null
-sudo docker exec -i $mysql_container_id sh -c 'exec mysql -uadmin -padmin1234' < "$(pwd)/database/database.sql" > /dev/null
+sudo docker exec -i $mysql_container_id sh -c 'exec mysql -h 127.0.0.1 -uadmin -padmin1234' < "$(pwd)/database/database.sql" > /dev/null
 echo ""
 echo "Todo listo, visita la siguiente direccion en tu navegador: http://localhost:81/index.php"
 #firefox "http://localhost:81/index.php"
