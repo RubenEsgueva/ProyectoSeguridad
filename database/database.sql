@@ -2,25 +2,6 @@ CREATE DATABASE IF NOT EXISTS COCHES;
 
 USE COCHES;
 
-DROP TABLE IF EXISTS COCHES;
-
-CREATE TABLE COCHES (
-  matricula varchar(10) NOT NULL,
-  modelo varchar(25) DEFAULT NULL,
-  usuario varchar(20) DEFAULT NULL,
-  estado enum('nuevo','seminuevo') DEFAULT NULL,
-  kilometraje int DEFAULT NULL,
-  precio decimal(10,2) DEFAULT NULL,
-  imagen varchar(120) DEFAULT NULL,
-  PRIMARY KEY (matricula),
-  KEY usuario (usuario),
-  CONSTRAINT COCHES_ibfk_1 FOREIGN KEY (usuario) REFERENCES USUARIO (usuario) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-LOCK TABLES COCHES WRITE;
-
-UNLOCK TABLES;
-
 DROP TABLE IF EXISTS USUARIO;
 
 CREATE TABLE USUARIO (
@@ -38,5 +19,24 @@ CREATE TABLE USUARIO (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES USUARIO WRITE;
+
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS COCHES;
+
+CREATE TABLE COCHES (
+  matricula varchar(10) NOT NULL,
+  modelo varchar(25) DEFAULT NULL,
+  usuario varchar(20) DEFAULT NULL,
+  estado enum('nuevo','seminuevo') DEFAULT NULL,
+  kilometraje int DEFAULT NULL,
+  precio decimal(10,2) DEFAULT NULL,
+  imagen varchar(120) DEFAULT NULL,
+  PRIMARY KEY (matricula),
+  KEY usuario (usuario),
+  CONSTRAINT COCHES_ibfk_1 FOREIGN KEY (usuario) REFERENCES USUARIO (usuario) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+LOCK TABLES COCHES WRITE;
 
 UNLOCK TABLES;
