@@ -1,7 +1,11 @@
 sudo docker build -t="carshow" .
 sudo docker-compose up -d
 mysql_container_id=$(sudo docker container ls | grep mysql | cut -d " " -f 1)
-echo $mysql_container_id
+#echo $mysql_container_id
+#sudo chmod 750 "/var/lib/mysql/#innodb_redo"
+#sudo chmod 640 "/var/lib/mysql/#innodb_redo/#ib_redo*"
+#sudo service mysql start
+sleep 5
 sudo docker exec -i $mysql_container_id sh -c 'exec mysql -uadmin -padmin1234' < "$(pwd)/database/database.sql"
 firefox "http://localhost:81/index.php"
 
