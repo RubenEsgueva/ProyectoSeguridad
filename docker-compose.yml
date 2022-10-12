@@ -1,6 +1,7 @@
 services:
   web:
     image: carshow
+    container_name: docker-php
     environment:
       - ALLOW_OVERRIDE=true
     ports:
@@ -12,16 +13,17 @@ services:
 
   db:
     image: mysql:latest
-    restart: always
+    container_name: docker-mysql
     volumes:
       - ./mysql:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: test
-      MYSQL_DATABASE: database
+      MYSQL_ROOT_PASSWORD: "root1234"
+      MYSQL_USER: "admin"
+      MYSQL_PASSWORD: "admin1234"
+      MYSQL_DATABASE: "COCHES"
     ports:
       - "8889:3306"
+    restart: always
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
@@ -30,6 +32,6 @@ services:
     ports:
       - 8890:80
     environment:
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: test
-      MYSQL_DATABASE: database
+      MYSQL_USER: "admin" #usuario admin para phpmyadmin (root)
+      MYSQL_PASSWORD: "admin1234" #contraseña para admin en phpmyadmin (root)
+      MYSQL_DATABASE: "COCHES"
