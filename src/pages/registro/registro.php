@@ -14,6 +14,13 @@
 </head>
 <body>
 	<?php
+		function test_input($data) {
+			$data = trim($data);
+			$data = stripslashes($data);
+			$data = htmlspecialchars($data);
+			 return $data;
+		  }
+		  
 	    $usuarioERR = $contrasenaERR = $contrasena2ERR = $correoERR = $nombreERR = $apellidoERR = $tlfERR = $DNIERR = $fechaERR = "";
 	    $correo = $nombre = $apellido = $tlf = $dni = $fecha = "";
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -36,7 +43,7 @@
 	    else
 	    {
 	    	$dni = test_input($_POST["dni"]);
-	    	if (!preg_match("/^[0-9]{8}-[A-Z]$/",$dni)
+	    	if (!preg_match("/^[0-9]{8}-[A-Z]$/",$dni))
 	    	{
 	    	    $DNIERR = "El formato del DNI es incorrecto, debe ser: 11111111-Z.";
 	    	}
@@ -58,7 +65,7 @@
 	    if (!empty($_POST["name"]))
 	    {
 	    	$nombre = test_input($_POST["name"]);
-	    	if (!preg_match("/^[a-zA-Z]*$/",$name)
+	    	if (!preg_match("/^[a-zA-Z]*$/",$name))
 	    	{
 	    	    $nombreERR = "El nombre solo puede contener letras.";
 	    	}
@@ -67,7 +74,7 @@
 	    if (!empty($_POST["surname"]))
 	    {
 	    	$apellido = test_input($_POST["surname"]);
-	    	if (!preg_match("/^[a-zA-Z]*$/",$surname)
+	    	if (!preg_match("/^[a-zA-Z]*$/",$surname))
 	    	{
 	    	    $apellidoERR = "El apellido solo puede contener letras.";
 	    	}
@@ -76,7 +83,7 @@
 	    if (!empty($_POST["tlf"]))
 	    {
 	    	$tlf = test_input($_POST["tlf"]);
-	    	if (!preg_match("/^[0-9]{9}$/",$tlf)
+	    	if (!preg_match("/^[0-9]{9}$/",$tlf))
 	    	{
 	    	    $tlfERR = "El teléfono solo puede contener números.";
 	    	}
@@ -89,13 +96,6 @@
 	    	{
 	    	    $fechanac = date('Y-m-d', $fecha);
 	    	}
-	    }
-
-	    function test_input($data) {
-	  	$data = trim($data);
-	  	$data = stripslashes($data);
-	  	$data = htmlspecialchars($data);
-	   	return $data;
 	    }
 	}
 	?>
