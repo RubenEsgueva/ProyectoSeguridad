@@ -16,6 +16,7 @@
 	<?php
 	    $usuarioERR = $contrasenaERR = $contrasena2ERR = $correoERR = $nombreERR = $apellidoERR = $tlfERR = $DNIERR = $fechaERR = "";
 	    $correo = $nombre = $apellido = $tlf = $dni = $fecha = "";
+	if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	    if (empty($_POST["usr"]))
 	    {
 	    	$usuarioERR = "Especificar un usuario es obligatorio.";
@@ -83,10 +84,10 @@
 	    
 	    if (!empty($_POST["bdate"]))
 	    {
-	    	$fecha = test_input($_POST["bdate"]);
-	    	if (!preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/",$fecha)
+	    	$fecha = strtotime($_POST['bdate']);
+	    	if ($fecha)
 	    	{
-	    	    $fechaERR = "El teléfono solo puede contener números.";
+	    	    $fechanac = date('Y-m-d', $fecha);
 	    	}
 	    }
 
@@ -96,6 +97,7 @@
 	  	$data = htmlspecialchars($data);
 	   	return $data;
 	    }
+	}
 	?>
 	<p><span class="error">* campo obligatorio</span></p>
 	<form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
@@ -124,7 +126,7 @@
 		<input type="text" class="casilla" name="tlf" placeholder="NNNNNNNNN">
 		<span class="error"><?php echo $nameErr;?></span><br>
 		<p>Fecha de nacimiento:</p>
-		<input type="text" class="casilla" name="bdate" placeholder="YYYY-MM-DD">
+		<input type="date" class="casilla" name="bdate" value="<?php echo date('Y-m-d'); ?>">
 		<span class="error"><?php echo $nameErr;?></span><br><br>
 		<input type="submit" class="boton" value="Confirmar">
 	</form>
