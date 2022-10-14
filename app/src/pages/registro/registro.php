@@ -32,22 +32,22 @@
 	    if (empty($_POST["pswd"]))
 	    {
     		$contrasenaERR = "Especificar una contraseña es obligatorio.";
-			else
+	    }
+	    else
+	    {
+		if (empty($_POST["pswd2"]))
+		{
+			$contrasena2ERR = "Por favor, verifique su contraseña.";
+		}
+		else
+		{
+			$pswd = test_input($_POST["pswd"]);
+			$pswd2 = test_input($_POST["pswd2"]);
+			if (strcmp($pswd,$pswd2))
 			{
-				if (empty($_POST["pswd2"]))
-				{
-					$contrasena2ERR = "Por favor, verifique su contraseña.";
-				}
-				else
-				{
-					$pswd = test_input($_POST["pswd"]);
-					$pswd2 = test_input($_POST["pswd2"]);
-					if (!strcmp($pswd,$pswd2))
-					{
-						$contrasena2ERR = "Las contraseñas no coinciden.";
-					}
-				}
+				$contrasena2ERR = "Las contraseñas no coinciden.";
 			}
+		}
 	    }
 	    if (empty($_POST["dni"]))
 	    {
