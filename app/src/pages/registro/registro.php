@@ -14,15 +14,16 @@
 </head>
 <body>
 	<?php
-		function test_input($data) {
+		function test_input($data){
 			$data = trim($data);
 			$data = stripslashes($data);
 			$data = htmlspecialchars($data);
-			 return $data;
-		  }
+			return $data;
+		}
 		  
 	    $usuarioERR = $contrasenaERR = $contrasena2ERR = $correoERR = $nombreERR = $apellidoERR = $tlfERR = $DNIERR = $fechaERR = "";
-	    $correo = $nombre = $apellido = $tlf = $dni = $fecha = "";
+	    $correo = $nombre = $apellido = $tlf = $dni = $pswd = $pswd2 = $fecha = "";
+
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	    if (empty($_POST["usr"]))
 	    {
@@ -32,9 +33,21 @@
 	    {
     		$contrasenaERR = "Especificar una contraseña es obligatorio.";
 	    }
-	    if (empty($_POST["pswd2"]))
+	    else
 	    {
-	    	$contrasena2ERR = "Por favor, verifique su contraseña.";
+		if (empty($_POST["pswd2"]))
+		{
+			$contrasena2ERR = "Por favor, verifique su contraseña.";
+		}
+		else
+		{
+			$pswd = test_input($_POST["pswd"]);
+			$pswd2 = test_input($_POST["pswd2"]);
+			if (strcmp($pswd,$pswd2))
+			{
+				$contrasena2ERR = "Las contraseñas no coinciden.";
+			}
+		}
 	    }
 	    if (empty($_POST["dni"]))
 	    {
@@ -55,17 +68,17 @@
 	    }	    
 	    else
 	    {
-	    	$mail = test_input($_POST["mail"]);
-    		if (!filter_var($mail, FILTER_VALIDATE_EMAIL))
+	    	$correo = test_input($_POST["mail"]);
+    		if (!filter_var($correo, FILTER_VALIDATE_EMAIL))
     		{
-      		    $mailERR = "El formato del correo es incorrecto.";
+      		    $correoERR = "El formato del correo es incorrecto.";
     		}
 	    }
 	    
 	    if (!empty($_POST["name"]))
 	    {
 	    	$nombre = test_input($_POST["name"]);
-	    	if (!preg_match("/^[a-zA-Z]*$/",$name))
+	    	if (!preg_match("/^[a-zA-Z]*$/",$nombre))
 	    	{
 	    	    $nombreERR = "El nombre solo puede contener letras.";
 	    	}
@@ -74,7 +87,7 @@
 	    if (!empty($_POST["surname"]))
 	    {
 	    	$apellido = test_input($_POST["surname"]);
-	    	if (!preg_match("/^[a-zA-Z]*$/",$surname))
+	    	if (!preg_match("/^[a-zA-Z]*$/",$apellido))
 	    	{
 	    	    $apellidoERR = "El apellido solo puede contener letras.";
 	    	}
