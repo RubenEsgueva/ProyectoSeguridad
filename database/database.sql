@@ -15,6 +15,7 @@ CREATE TABLE USUARIOS (
   email varchar(80) NOT NULL,
   pswd varchar(20) DEFAULT NULL,
   usuario varchar(20) NOT NULL,
+  imagen varchar(120),
   PRIMARY KEY (DNI),
   UNIQUE KEY ClaveUnica (email),
   UNIQUE KEY usuario (usuario)
@@ -42,3 +43,5 @@ CREATE TABLE COCHES (
 LOCK TABLES COCHES WRITE;
 
 UNLOCK TABLES;
+
+INSERT INTO USUARIOS VALUES('Nombre','Apel','6777777k','988988988','2002-11-28','emailol','passswd','usuario2', 'link.png');
