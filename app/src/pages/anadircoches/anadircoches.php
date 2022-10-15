@@ -14,6 +14,17 @@
 </head>
 <body>
 	<?php
+		$hostname = "db";
+		$username = "admin";
+		$password = "admin1234";
+		$db = "COCHES";
+	
+		$conexion = mysqli_connect($hostname, $username, $password, $db);
+		if ($conexion->connect_error)
+		{
+			die("Database connection failed: " . $conn->connect_error);
+		}
+
 		function test_input($data)
 		{
 			$data = trim($data);
@@ -23,19 +34,33 @@
 		}
 		$modelo = $matricula = $imagen = $estado = $kmtraje = $precio = "";
 		$modelERR = $matERR = $estadoERR = $imgERR = $kmERR = $precioERR = "";
+		$valido = true;
 		if ($_SERVER["REQUEST_METHOD"] == "POST") 
 		{
 			if (empty($_POST["model"]))
 	    	{
 	    		$modelERR = "Es necesario indicar el modelo del vehículo.";
+				$valido = false;
 	    	}
+			else
+			{
+				$modelo = test_input($_POST["model"]);
+			}
+
 			if (empty($_POST["platenum"]))
 	    	{
 	    		$matERR = "Es necesario indicar la matrícula del vehículo.";
+				$valido = false;
 	    	}
+			else
+			{
+				$matricula = test_input($_POST["platenum"]);
+			}
+
 			if (empty($_POST["imagen"]))
 	    	{
 	    		$imgERR = "Para verlo en el catálogo es necesario adjuntar una imagen.";
+				$valido = false;
 	    	}
 			else
 			{
@@ -45,18 +70,27 @@
 	    		if (!in_array($exten_img, $exten_permit))
 	    		{
 	    		    $imgERR = "El archivo adjuntado no tiene una extensión válida.";
+					$valido = false;
 	    		}
 			}
+
 			if (empty($_POST["status"]))
 	    	{
 	    		$estadoERR = "Por favor especifique el estado del vehículo.";
+				$valido = false;
 	    	}
+			else
+			{
+				$estado = test_input($_POST["status"]);
+			}
+
 			if (!empty($_POST["km"]))
 	    	{
 	    		$kmtraje = test_input($_POST["km"]);
 	    		if (!preg_match("/^[0-9]*$/",$kmtraje))
 	    		{
 	    		    $kmERR = "Por favor exprese el kilometraje en números enteros.";
+					$valido = false;
 	    		}
 	    	}
 			if (!empty($_POST["price"]))
@@ -65,8 +99,14 @@
 	    		if (!preg_match("/^[0-9]*\.[0-9]{2}$/",$precio))
 	    		{
 	    		    $precioERR = "Utilize el formato 9999.99 por favor.";
+					$valido = false;
 	    		}
 	    	}
+			if ($valido)
+			{
+				$query = "INSERT INTO COCHES VALUES($matricula,$modelo,'FoulRune',$estado,$kmtraje,$precio,$imagen)";
+				mysqli_query($conexion, $query);
+			}
 		}
 	?>
 	<p><span class="error">* campo obligatorio</span></p>
@@ -90,10 +130,10 @@
 		<span class="error">* <?php echo $estadoERR;?></span>
 		<p>Kilometraje:</p>
 		<input type="text" class="casilla" name="km" placeholder="Introduzca los kilometros recorridos.">
-		<span class="error">* <?php echo $kmERR;?></span><br>
+		<span class="error"><?php echo $kmERR;?></span><br>
 		<p>Precio:</p>
 		<input type="text" class="casilla" name="price" placeholder="Formato: 9999.99">
-		<span class="error">* <?php echo $precioERR;?></span><br><br>
+		<span class="error"><?php echo $precioERR;?></span><br><br>
 		<input type="submit" class="boton" value="Confirmar">
 	</form>
 </body>
