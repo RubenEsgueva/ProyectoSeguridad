@@ -17,11 +17,11 @@
     <h1>Esto es el Catalogo.</h1>
     <?php
         if (isset($_SESSION['usuario'])) {
-            $login = "true";
+            $username= $_SESSION['usuario'];
         } else {
-            $login = "false";
+            $login = "";
         }
-        echo "<script type='text/javascript' login='$login' class='gestionar_sesion' src='./gestionar_sesion.js'></script>";
+        echo "<script type='text/javascript' username='$username' class='gestionar_sesion' src='./gestionar_sesion.js'></script>";
     ?>
 </body>
 </html>
