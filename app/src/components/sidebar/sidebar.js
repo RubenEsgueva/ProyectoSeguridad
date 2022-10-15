@@ -1,11 +1,11 @@
-let menu_icon_white = document.querySelector(".menu_icon_white");
-let menu_icon_black = document.querySelector(".menu_icon_black");
+let cerrar_sidebar = document.querySelector(".cerrar_sidebar");
+let usuario_img_navbar = document.querySelector(".usuario_img_navbar");
 let sidebar = document.querySelector(".sidebar");
 
-menu_icon_white.addEventListener("click", () => {
-    sidebar.style.left = "0";
+usuario_img_navbar.addEventListener("click", () => {
+    sidebar.style.right = "0";
 });
 
-menu_icon_black.addEventListener("click", () => {
-    sidebar.style.left = "-12em";
+cerrar_sidebar.addEventListener("click", () => {
+    sidebar.style.right = "-18em";
 });
