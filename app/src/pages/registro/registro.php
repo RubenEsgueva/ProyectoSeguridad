@@ -60,6 +60,15 @@
 	    	{
 	    	    $DNIERR = "El formato del DNI es incorrecto, debe ser: 11111111-Z.";
 	    	}
+		else
+		{
+		    $letra= substr($dni, -1);
+		    $numeros= substr($dni,0,8);
+		    if (substr("TRWAGMYFPDXBNJZSQVHLCKE",$numeros%23,1)!=$letra)
+		    {
+			$DNIERR = "La letra del DNI no se corresponde con el número, no es válido.";
+		    }
+		}
 	    }
 	    
 	    if (empty($_POST["mail"]))
@@ -98,7 +107,7 @@
 	    	$tlf = test_input($_POST["tlf"]);
 	    	if (!preg_match("/^[0-9]{9}$/",$tlf))
 	    	{
-	    	    $tlfERR = "El teléfono solo puede contener números.";
+	    	    $tlfERR = "El teléfono solo puede estar formado por 9 números.";
 	    	}
 	    }
 	    
@@ -137,10 +146,10 @@
 		<span class="error">* <?php echo $DNIERR;?></span><br>
 		<p>Número de teléfono:</p>
 		<input type="text" class="casilla" name="tlf" placeholder="NNNNNNNNN">
-		<span class="error"><?php echo $nameErr;?></span><br>
+		<span class="error"><?php echo $tlfERR;?></span><br>
 		<p>Fecha de nacimiento:</p>
 		<input type="date" class="casilla" name="bdate" value="<?php echo date('Y-m-d'); ?>">
-		<span class="error"><?php echo $nameErr;?></span><br><br>
+		<span class="error"><?php echo $fechaERR;?></span><br><br>
 		<input type="submit" class="boton" value="Confirmar">
 	</form>
 </body>
