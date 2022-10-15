@@ -1,10 +1,12 @@
 .navbar {
-    display: flexbox;
     background-color: red;
+    display: grid;
 }
 
-.menu_icon_white {
+.usuario_img_navbar {
     margin: 0.5em;
     width: 2em;
     height: 1.5em;
+    grid-row: 1;
+    grid-column: 100;
 }
