@@ -14,41 +14,55 @@
 </head>
 <body>
 	<?php
-		function test_input($data){
+		function test_input($data)
+		{
 			$data = trim($data);
 			$data = stripslashes($data);
 			$data = htmlspecialchars($data);
 			return $data;
 		}
 		  
-	    $usuarioERR = $contrasenaERR = $contrasena2ERR = $correoERR = $nombreERR = $apellidoERR = $tlfERR = $DNIERR = $fechaERR = "";
-	    $correo = $nombre = $apellido = $tlf = $dni = $pswd = $pswd2 = $fecha = "";
+	    $usuarioERR = $perfimg = $contrasenaERR = $contrasena2ERR = $correoERR = $nombreERR = $apellidoERR = $tlfERR = $DNIERR = $fechaERR = "";
+	    $correo = $nombre = $perfimgERR = $apellido = $tlf = $dni = $pswd = $pswd2 = $fecha = "";
 
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	    if (empty($_POST["usr"]))
 	    {
 	    	$usuarioERR = "Especificar un usuario es obligatorio.";
 	    }
+
 	    if (empty($_POST["pswd"]))
 	    {
     		$contrasenaERR = "Especificar una contraseña es obligatorio.";
 	    }
 	    else
 	    {
-		if (empty($_POST["pswd2"]))
-		{
-			$contrasena2ERR = "Por favor, verifique su contraseña.";
-		}
-		else
-		{
-			$pswd = test_input($_POST["pswd"]);
-			$pswd2 = test_input($_POST["pswd2"]);
-			if (strcmp($pswd,$pswd2))
+			if (empty($_POST["pswd2"]))
 			{
-				$contrasena2ERR = "Las contraseñas no coinciden.";
+				$contrasena2ERR = "Por favor, verifique su contraseña.";
 			}
-		}
+			else
+			{
+				$pswd = test_input($_POST["pswd"]);
+				$pswd2 = test_input($_POST["pswd2"]);
+				if (strcmp($pswd,$pswd2))
+				{
+					$contrasena2ERR = "Las contraseñas no coinciden.";
+				}
+			}
 	    }
+		
+		if (!empty($_POST["perfimagen"]))
+	    {
+			$exten_permit = array("jpg","jpeg","png","gif");
+			$perfimg = test_input($_POST["perfimagen"]);
+			$exten_img = pathinfo($perfimg, PATHINFO_EXTENSION);
+	    	if (!in_array($exten_img, $exten_permit))
+	    	{
+	    	    $perfimgERR = "El archivo adjuntado no tiene una extensión válida.";
+	    	}
+		}
+
 	    if (empty($_POST["dni"]))
 	    {
 	    	$DNIERR = "El DNI es necesario para identificarse.";
@@ -60,15 +74,15 @@
 	    	{
 	    	    $DNIERR = "El formato del DNI es incorrecto, debe ser: 11111111-Z.";
 	    	}
-		else
-		{
-		    $letra= substr($dni, -1);
-		    $numeros= substr($dni,0,8);
-		    if (substr("TRWAGMYFPDXBNJZSQVHLCKE",$numeros%23,1)!=$letra)
-		    {
-			$DNIERR = "La letra del DNI no se corresponde con el número, no es válido.";
-		    }
-		}
+			else
+			{
+			    $letra= substr($dni, -1);
+		    	$numeros= substr($dni,0,8);
+		    	if (substr("TRWAGMYFPDXBNJZSQVHLCKE",$numeros%23,1)!=$letra)
+		    	{
+				$DNIERR = "La letra del DNI no se corresponde con el número, no es válido.";
+		    	}
+			}
 	    }
 	    
 	    if (empty($_POST["mail"]))
@@ -132,6 +146,9 @@
 		<p>Confirmar contraseña:</p>
 		<input type="password" class="casilla" name="pswd2" placeholder="Repite tu contraseña.">
 		<span class="error">* <?php echo $contrasena2ERR;?></span><br>
+		<p>Adjuntar una foto de perfil:</p>
+ 		<input type="file" id="perfimagen" name="perfimagen">
+		<span class="error"><?php echo $perfimgERR;?></span><br>
 		<p>Correo electrónico:</p>
 		<input type="text" class="casilla" name="mail" placeholder="yourmail@example.something">
 		<span class="error">* <?php echo $correoERR;?></span><br>
