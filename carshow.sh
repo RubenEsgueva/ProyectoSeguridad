@@ -26,6 +26,7 @@ function iniciarServidor() {
     docker-compose up -d
     mysql_container_id=$(docker container ls | grep mysql | cut -d " " -f 1)
     docker container ls &> /dev/null
+    echo -e "[*] Cargando toda la base de datos..."
     docker exec -i $mysql_container_id sh -c 'exec mysql -uroot -proot1234' < "$(pwd)/database/database.sql" &> /dev/null
     while [[ "$?" == "1" ]]; do
         docker exec -i $mysql_container_id sh -c 'exec mysql -uroot -proot1234' < "$(pwd)/database/database.sql" &> /dev/null
