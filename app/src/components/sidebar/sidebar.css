@@ -1,20 +1,28 @@
 .sidebar {
     position: absolute;
-    left: -12em;
+    right: -18em;
     top: 0;
-    width: 12em;
+    width: 18em;
     height: 100vh;
-    background-color: white;
+    background-color: red;
     display: flex;
     flex-direction: column;
     transition-duration: 1s;
 }
 
-.menu_icon_black {
+.usuario_img_sidebar {
     margin: 0.5em;
-    width: 2em;
-    height: 1.5em;
-    align-self: flex-end;
+    width: 4em;
+    height: 3em;
+    align-self: flex-start;
+}
+
+.cerrar_sidebar {
+    position: absolute;
+    width: 5em;
+    height: 2em;
+    top: 1em;
+    right: 1em;
 }
 
 .menu_links {
