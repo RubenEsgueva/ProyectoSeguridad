@@ -18,7 +18,7 @@ read -p "Opcion: " option
 echo ""
 
 function instalarDependencias() {
-    apt install docker docker-compose mysql-server mysql-client -y
+    apt install docker docker-compose -y
 }
 
 function iniciarServidor() {
