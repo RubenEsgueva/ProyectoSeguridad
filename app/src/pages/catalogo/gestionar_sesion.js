@@ -1,8 +1,8 @@
-let iniciado = document.querySelector('.gestionar_sesion').getAttribute("login");
+let username = document.querySelector('.gestionar_sesion').getAttribute("username");
 
-if (iniciado === "true") {
-    document.querySelector(".usuario_img_sidebar").src = "/public/menu_white.png";
-    document.querySelector(".usuario_img_navbar").src = "/public/menu_white.png";
+if (!(username === "")) {
+    document.querySelector(".usuario_img_sidebar").src = "/public/"+username+".png";
+    document.querySelector(".usuario_img_navbar").src = "/public/"+username+".png";
     document.querySelector(".iniciar_sesion").style.display = "none";
     document.querySelector(".cerrar_sesion").style.display = "block";
 
