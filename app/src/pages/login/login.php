@@ -11,8 +11,9 @@
     <link rel="stylesheet" href="/var/www/html/src/pages/login/login.css">
 </head>
 <body>
-    <form action="/var/www/html/server/login.php" method="post">
-        <input type="text" name="user_id">
+    <form action="/server/login.php" method="post">
+        <input type="text" name="usuario" placeholder="Usuario">
+        <input type="password" name="contrasena" placeholder="Contraseña">
         <input type="submit" value="LogIn">
     </form>
     <?php include '/var/www/html/src/components/footer/footer.php'?>
