@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS USUARIOS;
 CREATE TABLE USUARIOS (
   Nombre varchar(30) DEFAULT NULL,
   Apellido varchar(30) DEFAULT NULL,
-  DNI char(8) NOT NULL,
+  DNI char(10) NOT NULL,
   Telefono int DEFAULT NULL,
   FechaNcto date DEFAULT NULL,
   email varchar(80) NOT NULL,
@@ -44,4 +44,4 @@ LOCK TABLES COCHES WRITE;
 
 UNLOCK TABLES;
 
-INSERT INTO USUARIOS VALUES('Nombre','Apel','6777777k','988988988','2002-11-28','emailol','passswd','usuario2', 'link.png');
+INSERT INTO USUARIOS VALUES('Rodrigo','Lameguijarros','72408028-A','999420069','2002-11-28','correo@de.prueba','contrasena','LechugAsesina45', 'link.png');
