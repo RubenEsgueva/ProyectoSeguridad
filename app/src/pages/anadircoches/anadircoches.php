@@ -5,20 +5,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+	<style>.error {color: #FF0000;}</style>
+	<meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CarShow - Añadir Coche</title>
 	<link rel="stylesheet" href="/var/www/html/src/pages/anadircoches/anadircoches.css">
 </head>
 <body>
-	<form action="database/coches.php" method="post">
+	<?php
+		if ( ! function_exists( 'exif_imagetype' ) ) {
+			function exif_imagetype ( $filename ) {
+				if ( ( list($width, $height, $type, $attr) = getimagesize( $filename ) ) !== false ) {
+					return $type;
+				}
+			return false;
+			}
+		}
+		function test_input($data)
+		{
+			$data = trim($data);
+			$data = stripslashes($data);
+			$data = htmlspecialchars($data);
+			return $data;
+		}
+		$modelo = $matricula = $imagen = $estado = $kmtraje = $precio = "";
+		$modelERR = $matERR = $estadoERR = $imgERR = $kmERR = $precioERR = "";
+		if ($_SERVER["REQUEST_METHOD"] == "POST") 
+		{
+			if (empty($_POST["model"]))
+	    	{
+	    		$modelERR = "Es necesario indicar el modelo del vehículo.";
+	    	}
+			if (empty($_POST["platenum"]))
+	    	{
+	    		$matERR = "Es necesario indicar la matrícula del vehículo.";
+	    	}
+			if (empty($_POST["imagen"]))
+	    	{
+	    		$imgERR = "Para verlo en el catálogo es necesario adjuntar una imagen.";
+	    	}
+			else
+			{
+				$exten_permit = array("jpg","jpeg","png","gif");
+				$imagen = test_input($_POST["imagen"]);
+				$exten_img = pathinfo($imagen, PATHINFO_EXTENSION);
+	    		if (!in_array($exten_img, $exten_permit))
+	    		{
+	    		    $imgERR = "El archivo adjuntado no tiene una extensión válida.";
+	    		}
+			}
+			if (empty($_POST["status"]))
+	    	{
+	    		$estadoERR = "Por favor especifique el estado del vehículo.";
+	    	}
+			if (!empty($_POST["km"]))
+	    	{
+	    		$kmtraje = test_input($_POST["km"]);
+	    		if (!preg_match("/^[0-9]*$/",$kmtraje))
+	    		{
+	    		    $kmERR = "Por favor exprese el kilometraje en números enteros.";
+	    		}
+	    	}
+			if (!empty($_POST["price"]))
+	    	{
+	    		$precio = test_input($_POST["price"]);
+	    		if (!preg_match("/^[0-9]*\.[0-9]{2}$/",$precio))
+	    		{
+	    		    $precioERR = "Utilize el formato 9999.99 por favor.";
+	    		}
+	    	}
+		}
+	?>
+	<p><span class="error">* campo obligatorio</span></p>
+	<form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
 		<p>Modelo:</p>
-		<input type="text" class="casilla" name="model" placeholder="Ej.: Batmóvil 2016" autofocus><br>
+		<input type="text" class="casilla" name="model" placeholder="Ej.: Batmóvil 2016" autofocus>
+		<span class="error">* <?php echo $modelERR;?></span><br>
 		<p>Matrícula:</p>
-		<input type="text" class="casilla" name="platenum" placeholder="Especifique su matrícula"><br>
+		<input type="text" class="casilla" name="platenum" placeholder="Especifique su matrícula">
+		<span class="error">* <?php echo $matERR;?></span><br>
 		<p>Seleccione la imagen que desee adjuntar:</p>
- 		<input type="file" id="imagen" name="imagen"><br>
+ 		<input type="file" id="imagen" name="imagen">
+		<span class="error">* <?php echo $imgERR;?></span><br>
 		<p>Estado:</p>
 		<input type="radio" id="nuevo" class="radio" name="status" value="Nuevo">
 		<label for="nuevo">Nuevo</label><br>
@@ -26,10 +95,13 @@
 		<label for="seminuevo">Seminuevo</label><br>
 		<input type="radio" id="segundamano" class="radio" name="status" value="Segunda Mano">
 		<label for="segundamano">Segunda mano</label><br>
+		<span class="error">* <?php echo $estadoERR;?></span>
 		<p>Kilometraje:</p>
-		<input type="text" class="casilla" name="km" placeholder="Introduzca los kilometros recorridos."><br>
+		<input type="text" class="casilla" name="km" placeholder="Introduzca los kilometros recorridos.">
+		<span class="error">* <?php echo $kmERR;?></span><br>
 		<p>Precio:</p>
-		<input type="text" class="casilla" name="price" placeholder="Introduzca el valor del vehículo."><br><br>
+		<input type="text" class="casilla" name="price" placeholder="Formato: 9999.99">
+		<span class="error">* <?php echo $precioERR;?></span><br><br>
 		<input type="submit" class="boton" value="Confirmar">
 	</form>
 </body>
