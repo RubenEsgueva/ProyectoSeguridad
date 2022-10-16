@@ -66,6 +66,11 @@
 					$matERR = "La matrícula ya está registrada.";
 					$valido = false;
 				}
+				elseif (!preg_match("/^[a-zA-Z0-9]*$/",$matricula))
+				{
+					$matERR = "La matrícula no puede incluir espacios o caracteres especiales.";
+					$valido = false;
+				}
 			}
 
 			if (empty($_POST["imagen"]))
@@ -163,7 +168,7 @@
 		<p>Modelo:</p>
 		<input type="text" class="casilla" name="model" placeholder="Ej.: Batmóvil 2016" autofocus>
 		<span class="error">* <?php echo $modelERR;?></span><br>
-		<p>Matrícula:</p>
+		<p>Matrícula (Sin espacios):</p>
 		<input type="text" class="casilla" name="platenum" placeholder="Especifique su matrícula">
 		<span class="error">* <?php echo $matERR;?></span><br>
 		<p>Seleccione la imagen que desee adjuntar:</p>

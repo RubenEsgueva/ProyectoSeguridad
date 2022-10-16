@@ -4,5 +4,9 @@
 }
 
 body {
-    background-color: #111;
+    background-color: rgb(207, 141, 141);
 }
+
+hr.solid {
+    border-top: 3px solid #bbb;
+  }
