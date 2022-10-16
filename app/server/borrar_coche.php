@@ -3,12 +3,7 @@
     $matricula = $_POST['matricula'];
     $usuario = $_SESSION['usuario'];
     $dueno = $_POST['usuario'];
-    if (empty($dueno)) {
-        echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/catalogo/catalogo.php");</script>';
-    }
-    if ("$usuario" !== "$dueno") {
-        echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/catalogo/catalogo.php");</script>';
-    } else {
+    if (strcmp($usuario, $dueno) != 0) {
         $query = "DELETE FROM COCHES WHERE matricula = '$matricula'";
         $resultado = mysqli_query($conexion,$query);
     }
