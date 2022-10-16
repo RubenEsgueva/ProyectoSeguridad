@@ -1,4 +1,6 @@
 <?php
     include 'conexion_db.php';
-    echo 'TO DO';
+    $query = "SELECT * FROM COCHES";
+    $listaCoches = mysqli_query($conexion,$query);
+    include 'close_conexion_db.php';
 ?>

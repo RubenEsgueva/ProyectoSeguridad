@@ -11,3 +11,11 @@
     grid-row: 1;
     grid-column: 100;
 }
+
+.anadir_coche {
+    margin: 0.5em;
+    width: 1.5em;
+    height: 1.5em;
+    grid-row: 1;
+    grid-column: 90;
+}
