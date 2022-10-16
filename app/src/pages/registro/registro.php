@@ -263,30 +263,30 @@
 
 	<div><span class="error">* campo obligatorio</span></div>
 	<form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
-		<div>Nombre de usuario:</div>
+		<div>Nombre de usuario:*</div>
 		<input type="text" class="casilla" name="usr" placeholder="Introduzca su nombre de usuario" autofocus>
-		<span class="error">* <?php echo $usuarioERR;?></span><br>
-		<div>Contraseña:</div>
+		<span class="error"><?php echo $usuarioERR;?></span><br>
+		<div>Contraseña:*</div>
 		<input type="password" class="casilla" name="pswd" placeholder="Mantén tu contraseña oculta.">
-		<span class="error">* <?php echo $contrasenaERR;?></span><br>
-		<div>Confirmar contraseña:</div>
+		<span class="error"><?php echo $contrasenaERR;?></span><br>
+		<div>Confirmar contraseña:*</div>
 		<input type="password" class="casilla" name="pswd2" placeholder="Repite tu contraseña.">
-		<span class="error">* <?php echo $contrasena2ERR;?></span><br>
+		<span class="error"><?php echo $contrasena2ERR;?></span><br>
 		<p>Adjuntar una foto de perfil:</p>
  		<input type="file" id="perfimagen" name="perfimagen">
 		<span class="error"><?php echo $perfimgERR;?></span><br>
-		<p>Correo electrónico:</p>
+		<p>Correo electrónico:*</p>
 		<input type="text" class="casilla" name="mail" placeholder="yourmail@example.something">
-		<span class="error">* <?php echo $correoERR;?></span><br>
+		<span class="error"><?php echo $correoERR;?></span><br>
 		<div>Nombre:</div>
 		<input type="text" class="casilla" name="name" placeholder="Hermenegilda">
 		<span class="error"><?php echo $nombreERR;?></span><br>
 		<div>Apellido:</div>
 		<input type="text" class="casilla" name="surname" placeholder="Barinagarrementeria">
 		<span class="error"><?php echo $apellidoERR;?></span><br>
-		<div>DNI:</div>
+		<div>DNI:*</div>
 		<input type="text" class="casilla" name="dni" placeholder="11111111-Z">
-		<span class="error">* <?php echo $DNIERR;?></span><br>
+		<span class="error"><?php echo $DNIERR;?></span><br>
 		<div>Número de teléfono:</div>
 		<input type="text" class="casilla" name="tlf" placeholder="NNNNNNNNN">
 		<span class="error"><?php echo $nameErr;?></span><br>

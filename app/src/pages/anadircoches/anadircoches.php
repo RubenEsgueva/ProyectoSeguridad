@@ -10,7 +10,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CarShow - Añadir Coche</title>
-	<link rel="stylesheet" href="/var/www/html/src/pages/anadircoches/anadircoches.css">
+	<link rel="stylesheet" href="anadircoches.css">
 </head>
 <body>
 	<?php
@@ -171,21 +171,21 @@
 	?>
 	<p><span class="error">* campo obligatorio</span></p>
 	<form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
-		<p>Modelo:</p>
+		<p>Modelo:*</p>
 		<input type="text" class="casilla" name="model" placeholder="Ej.: Batmóvil 2016" autofocus>
-		<span class="error">* <?php echo $modelERR;?></span><br>
-		<p>Matrícula (Sin espacios):</p>
+		<span class="error"><?php echo $modelERR;?></span><br>
+		<p>Matrícula (Sin espacios):*</p>
 		<input type="text" class="casilla" name="platenum" placeholder="Especifique su matrícula">
-		<span class="error">* <?php echo $matERR;?></span><br>
-		<p>Seleccione la imagen que desee adjuntar:</p>
+		<span class="error"><?php echo $matERR;?></span><br>
+		<p>Seleccione la imagen que desee adjuntar:*</p>
  		<input type="file" id="imagen" name="imagen">
-		<span class="error">* <?php echo $imgERR;?></span><br>
-		<p>Estado:</p>
+		<span class="error"><?php echo $imgERR;?></span><br>
+		<p>Estado:*</p>
 		<input type="radio" id="nuevo" class="radio" name="status" value="Nuevo">
 		<label for="nuevo">Nuevo</label><br>
 		<input type="radio" id="seminuevo" class="radio" name="status" value="Seminuevo">
 		<label for="seminuevo">Seminuevo</label><br>
-		<span class="error">* <?php echo $estadoERR;?></span>
+		<span class="error"><?php echo $estadoERR;?></span>
 		<p>Kilometraje:</p>
 		<input type="text" class="casilla" name="km" placeholder="Introduzca los kilometros recorridos.">
 		<span class="error"><?php echo $kmERR;?></span><br>
