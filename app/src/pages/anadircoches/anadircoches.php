@@ -14,6 +14,8 @@
 </head>
 <body>
 	<?php
+		//este archivo y registro.php cumplen una función muy similar por lo que en su mayoría será la misma explicación.
+		//para guardar datos hace falta conectarse a la base de datos.
 		$hostname = "db";
 		$username = "admin";
 		$password = "admin1234";
@@ -24,7 +26,7 @@
 		{
 			die("Database connection failed: " . $conexion->connect_error);
 		}
-
+		//este es un metodo de seguridad, obtenido de: https://www.w3schools.com/php/php_form_validation.asp
 		function test_input($data)
 		{
 			$data = trim($data);
@@ -36,7 +38,7 @@
 		$modelo = $matricula = $imagen = $estado = "";
 		$modelERR = $matERR = $estadoERR = $imgERR = $kmERR = $precioERR = $bdERR = "";
 		$valido = true;
-
+		//Cada vez que se pulse el boton de confirmar habrá que comprobar el contenido de cada casilla.
 		if ($_SERVER["REQUEST_METHOD"] == "POST") 
 		{
 			if (empty($_POST["model"]))
@@ -112,14 +114,16 @@
 					$valido = false;
 	    		}
 	    	}
-
+			//si todos los contenidos cumplen las condiciones entonces podremos añadir el elemento a la base de datos.
 			if ($valido)
 			{
+				//primero metemos los datos que son obligatorios.
 				$usuario = $_SESSION['usuario'];
 				$dist = intval($kmtraje);
 				$query = "INSERT INTO COCHES (matricula,modelo,usuario,estado,imagen) VALUES ('{$matricula}', '{$modelo}', '{$usuario}', '{$estado}', '{$imagen}')";
 				if ($conexion->query($query) === TRUE) 
 				{
+					//tras haber creado ya la fila con los datos principales vamos comprobando que datos que se pueden quedar vacíos hay puestos.
 					if (isset($precio))
 					{
 						$query = "UPDATE COCHES SET precio = '{$precio}' WHERE matricula = '{$matricula}'";
@@ -144,6 +148,7 @@
 							echo "Error: " . $query . "<br>" . $conexion->error;
 						}
 					}
+					//tras meter toda la información necesaria volvemos a catalogo donde ahora debería aparecer el nuevo vehículo.
 					echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/catalogo/catalogo.php");</script>';
 				} 
 				else 
