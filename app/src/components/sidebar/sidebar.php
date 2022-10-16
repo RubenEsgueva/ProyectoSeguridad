@@ -1,4 +1,4 @@
-<?php 
+<?php
     echo '
     <link rel="stylesheet" href="/src/components/sidebar/sidebar.css">
     <aside class="sidebar_modificar">
@@ -17,6 +17,11 @@
             <input type="submit" value="Aceptar" class="aceptar_modificacion">
         </form>
         <button class="cancelar_modificacion">Cancelar</button>
+        ';
+        if ($_SESSION['error_modi'] !== '') {
+            echo '<p class="error">Error: El campo '.$_SESSION['error_modi'].' tiene mal formato.</p>';
+        }
+    echo '
     </aside>
     <aside class="sidebar">
         <img class="usuario_img_sidebar" src="" alt="Foto de perfil">
@@ -31,6 +36,7 @@
         <button class="modificar_datos">Modificar datos</button>
         <button class="cerrar_sesion">Cerrar Sesión</button>
         <button class="iniciar_sesion">Iniciar Sesión</button>
+        <button class="registrarse">Registrarse</button>
     </aside>
     <script src="/src/components/sidebar/sidebar.js"></script>';
 ?>
