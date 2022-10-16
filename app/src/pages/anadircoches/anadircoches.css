@@ -8,7 +8,7 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-image: url("./images/fondo.png")/*no-repeat center center fixed*/;
+    background-image: url("../registro/images/fondo.png")/*no-repeat center center fixed*/;
     background-size: cover;
     height: 100vh;
 }
@@ -21,7 +21,7 @@ form {
     -moz-border-radius: 4px; 
     border-radius: 4px; 
     width: max-content;
-    display:grid;
+    display:block;
     flex-direction: column;
     justify-content: center;
     align-items: center;
