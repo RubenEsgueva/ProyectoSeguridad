@@ -42,4 +42,6 @@ LOCK TABLES COCHES WRITE;
 
 UNLOCK TABLES;
 
-INSERT INTO USUARIOS VALUES('Rodrigo','Lameguijarros','72408028-A','999420069','2002-11-28','correo@de.prueba','contrasena','LechugAsesina45', 'link.png');
+INSERT INTO USUARIOS VALUES ('Rodrigo','Lameguijarros','72408028-A','999420069','2002-11-28','correo@de.prueba','contrasena','LechugAsesina45', 'link.png');
+INSERT INTO COCHES VALUES ('AABB-45', 'bien perron', 'LechugAsesina45', 'nuevo', 120000, 123.99, 'AABB-45.png');
+INSERT INTO COCHES VALUES ('AABB-46', 'bien cabron', 'LechugAsesina45', 'seminuevo', 130000, 124.99, 'AABB-46.png');
