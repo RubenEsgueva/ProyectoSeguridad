@@ -64,9 +64,7 @@
     ?>
     <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
         <br>
-        <div class="boton">
         <input type="submit" class="boton" value="Añadir Coche">
-        </div>
         <span class="error"><?php echo $anadirERR;?></span><br>
 	</form>
 </body>

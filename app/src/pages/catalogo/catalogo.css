@@ -19,21 +19,8 @@ body {
 
 }
 
-form{
-    background-color: #f5f5f588;   /* Color de fondo */
-    border: 2px solid #eee;      /* borde para el formulario */
-    padding:20px;
-    -webkit-border-radius: 5px;  /* bordes redondeados */
-    -moz-border-radius: 4px; 
-    border-radius: 4px; 
-    width: max-content;
-    display:grid;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align:center;
-}
 
 hr.solid {
     border-top: 3px solid #bbb;
   }
+
