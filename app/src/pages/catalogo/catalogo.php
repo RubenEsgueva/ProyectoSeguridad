@@ -22,8 +22,10 @@
             echo '<hr class="solid">';
             echo '<br><img class="coche_img" src="/public/matriculas/'.$row['imagen'].'" alt="Foto de coche"> <br>Modelo:' .$row['modelo'].' <br>Propietario: ' .$row['usuario'].'<br>';
             $matricula = $row['matricula'];
+            $usuario = $row['usuario'];
             echo '
                 <form action="/src/pages/detalles/detalles.php" method="post">
+                <input type="hidden" name="usuario" value='.$usuario.'>
                     <input type="hidden" name="matricula" value='.$matricula.'>
                     <br><input type="submit" class="boton" name='.$matricula.' value="Ver detalles">
                 </form>';      
