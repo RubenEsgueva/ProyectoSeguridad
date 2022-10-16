@@ -32,9 +32,11 @@
 			$data = htmlspecialchars($data);
 			return $data;
 		}
-		$modelo = $matricula = $imagen = $estado = $kmtraje = $precio = "";
+
+		$modelo = $matricula = $imagen = $estado = "";
 		$modelERR = $matERR = $estadoERR = $imgERR = $kmERR = $precioERR = $bdERR = "";
 		$valido = true;
+
 		if ($_SERVER["REQUEST_METHOD"] == "POST") 
 		{
 			if (empty($_POST["model"]))
@@ -55,13 +57,13 @@
 			else
 			{
 				$matricula = test_input($_POST["platenum"]);
-				/*$query = "SELECT * FROM COCHES WHERE matricula = '{$matricula}";
-				mysqli_query($conexion, $query);
-				if (mysqli_query($conexion, $query) === FALSE) 
+				$query = "SELECT * FROM COCHES WHERE matricula = '{$matricula}'";
+				$resultado = mysqli_query($conexion,$query);
+				if ($resultado->num_rows > 0) 
 				{
 					$matERR = "La matrícula ya está registrada.";
 					$valido = false;
-				}*/
+				}
 			}
 
 			if (empty($_POST["imagen"]))
@@ -100,10 +102,6 @@
 					$valido = false;
 	    		}
 	    	}
-			else
-			{
-				$kmtraje = NULL;
-			}
 
 			if (!empty($_POST["price"]))
 	    	{
@@ -114,20 +112,39 @@
 					$valido = false;
 	    		}
 	    	}
-			else
-			{
-				$precio = NULL;
-			}
 
 			if ($valido)
 			{
 				$usuario = $_SESSION['usuario'];
 				$dist = intval($kmtraje);
-				$query = "INSERT INTO COCHES VALUES ('{$matricula}', '{$modelo}', '{$usuario}', '{$estado}', '{$dist}', '{$precio}', '{$imagen}')";
-				mysqli_query($conexion, $query);
+				$query = "INSERT INTO COCHES (matricula,modelo,usuario,estado,imagen) VALUES ('{$matricula}', '{$modelo}', '{$usuario}', '{$estado}', '{$imagen}')";
 				if ($conexion->query($query) === TRUE) 
 				{
-					echo "New record created successfully";
+					if (isset($precio))
+					{
+						$query = "UPDATE COCHES SET precio = '{$precio}' WHERE matricula = '{$matricula}'";
+						if ($conexion->query($query) === TRUE) 
+						{
+							echo "DATABASE UPDATED SUCCESFULLY";
+						}
+						else
+						{
+							echo "Error: " . $query . "<br>" . $conexion->error;
+						}
+					}
+					if (isset($kmtraje))
+					{
+						$query = "UPDATE COCHES SET kilometraje = '{$kmtraje}' WHERE matricula = '{$matricula}'";
+						if ($conexion->query($query) === TRUE) 
+						{
+							echo "DATABASE UPDATED SUCCESFULLY";
+						}
+						else
+						{
+							echo "Error: " . $query . "<br>" . $conexion->error;
+						}
+					}
+					echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/catalogo/catalogo.php");</script>';
 				} 
 				else 
 				{

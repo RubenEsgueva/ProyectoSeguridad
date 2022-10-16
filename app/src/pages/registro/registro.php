@@ -34,7 +34,7 @@
 		}
 		  
 	    $usuarioERR = $perfimg = $contrasenaERR = $contrasena2ERR = $correoERR = $nombreERR = $apellidoERR = $tlfERR = $DNIERR = $fechaERR = "";
-	    $correo = $nombre = $perfimgERR = $apellido = $tlf = $dni = $pswd = $pswd2 = $fecha = "";
+	    $correo = $perfimgERR= $dni = $pswd = $pswd2 = "";
 		$valid = true;
 
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -46,6 +46,13 @@
 		else
 		{
 			$usuario = $_POST["usr"];
+			$query = "SELECT * FROM USUARIOS WHERE usuario = '{$usuario}'";
+			$resultado = mysqli_query($conexion,$query);
+			if ($resultado->num_rows > 0) 
+			{
+				$usuarioERR = "Ese nombre de usario está en uso.";
+				$valid = false;
+			}
 		}
 
 	    if (empty($_POST["pswd"]))
@@ -165,8 +172,75 @@
 
 		if ($valid)
 		{
-			$query = "INSERT INTO USUARIOS VALUES ('{$nombre}','{$apellido}','{$dni}','{$tlf}','{$fechanac}','{$correo}','{$pswd}','{$usuario}','{$perfimg}')";
-			mysqli_query($conexion, $query);
+			$query = "INSERT INTO USUARIOS (DNI,email,pswd,usuario) VALUES ('{$dni}','{$correo}','{$pswd}','{$usuario}')";
+			if ($conexion->query($query) === TRUE) 
+				{
+					if (isset($nombre))
+					{
+						$query = "UPDATE USUARIOS SET Nombre = '{$nombre}' WHERE usuario = '{$usuario}'";
+						if ($conexion->query($query) === TRUE) 
+						{
+							echo "DATABASE UPDATED SUCCESFULLY";
+						}
+						else
+						{
+							echo "Error: " . $query . "<br>" . $conexion->error;
+						}
+					}
+					if (isset($apellido))
+					{
+						$query = "UPDATE USUARIOS SET Apellido = '{$apellido}' WHERE usuario = '{$usuario}'";
+						if ($conexion->query($query) === TRUE) 
+						{
+							echo "DATABASE UPDATED SUCCESFULLY";
+						}
+						else
+						{
+							echo "Error: " . $query . "<br>" . $conexion->error;
+						}
+					}
+					if (isset($tlf))
+					{
+						$query = "UPDATE USUARIOS SET Telefono = '{$tlf}' WHERE usuario = '{$usuario}'";
+						if ($conexion->query($query) === TRUE) 
+						{
+							echo "DATABASE UPDATED SUCCESFULLY";
+						}
+						else
+						{
+							echo "Error: " . $query . "<br>" . $conexion->error;
+						}
+					}
+					if (isset($fechanac))
+					{
+						$query = "UPDATE USUARIOS SET FechaNcto = '{$fechanac}' WHERE usuario = '{$usuario}'";
+						if ($conexion->query($query) === TRUE) 
+						{
+							echo "DATABASE UPDATED SUCCESFULLY";
+						}
+						else
+						{
+							echo "Error: " . $query . "<br>" . $conexion->error;
+						}
+					}
+					if (isset($perfimg))
+					{
+						$query = "UPDATE USUARIOS SET imagen = '{$perfimg}' WHERE usuario = '{$usuario}'";
+						if ($conexion->query($query) === TRUE) 
+						{
+							echo "DATABASE UPDATED SUCCESFULLY";
+						}
+						else
+						{
+							echo "Error: " . $query . "<br>" . $conexion->error;
+						}
+					}
+					echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/login/login.php");</script>';
+				} 
+				else 
+				{
+					echo "Error: " . $query . "<br>" . $conexion->error;
+				}
 		}
 	}
 	?>
