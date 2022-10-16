@@ -15,6 +15,7 @@
 <body>
     <?php
         $matricula = $_POST['matricula'];
+        $usuario = $_POST['usuario'];
         $hostname = "db";
 		$username = "admin";
 		$password = "admin1234";
@@ -38,26 +39,11 @@
         {
             echo '<br> Precio: '.$row['precio'];
         }
-
-        if ($_SERVER["REQUEST_METHOD"] == "POST")
-        {
-            if (isset($_SESSION['usuario'])) 
-            {
-                if (confirm())
-                {
-                    $query = "";
-                    mysqli_query($conexion,$query);
-                    echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/catalogo/catalogo.php");</script>';
-                }
-            } 
-            else 
-            {
-                $anadirERR = "Solo el propietario puede realizar esta accion.";
-            }
-        }
     ?>
-    <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
-        <br><input type="submit" class="boton" value="Borrar Vehículo">
+    <form action="/server/borrar_coche.php" method="post">
+        <input type="hidden" name="matricula" value="<?php echo $matricula; ?>">
+        <input type="hidden" name="usuario" value="<?php echo $usuario; ?>">
+        <br><input type="submit" class="boton_borrar" value="Borrar Vehículo">
         <span class="error"><?php echo $anadirERR;?></span><br>
 	</form>
 </body>
