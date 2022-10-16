@@ -10,12 +10,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CarShow - Registrate</title>
-	<link rel="stylesheet" href="/var/www/html/src/pages/registro/registro.css">
+		<link rel="stylesheet" href="/var/www/html/src/pages/registro/registro.css">
 </head>
 <body>
 	<?php
-		//este archivo y anadircoches.php cumplen una función muy similar por lo que en su mayoría será la misma explicación.
-		//para guardar datos hace falta conectarse a la base de datos.
 		$hostname = "db";
 		$username = "admin";
 		$password = "admin1234";
@@ -26,7 +24,7 @@
 		{
 			die("Database connection failed: " . $coexion->connect_error);
 		}
-		//este es un metodo de seguridad, obtenido de: https://www.w3schools.com/php/php_form_validation.asp
+
 		function test_input($data)
 		{
 			$data = trim($data);
@@ -38,7 +36,7 @@
 	    $usuarioERR = $perfimg = $contrasenaERR = $contrasena2ERR = $correoERR = $nombreERR = $apellidoERR = $tlfERR = $DNIERR = $fechaERR = "";
 	    $correo = $perfimgERR= $dni = $pswd = $pswd2 = "";
 		$valid = true;
-	//Cada vez que se pulse el boton de confirmar habrá que comprobar el contenido de cada casilla.
+
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	    if (empty($_POST["usr"]))
 	    {
@@ -171,13 +169,12 @@
 	    	    $fechanac = date('Y-m-d', $fecha);
 	    	}
 	    }
-		//si todos los contenidos cumplen las condiciones entonces podremos añadir el elemento a la base de datos.
+
 		if ($valid)
 		{
 			$query = "INSERT INTO USUARIOS (DNI,email,pswd,usuario) VALUES ('{$dni}','{$correo}','{$pswd}','{$usuario}')";
 			if ($conexion->query($query) === TRUE) 
 				{
-					//tras haber creado ya la fila con los datos principales vamos comprobando que datos que se pueden quedar vacíos hay puestos.
 					if (isset($nombre))
 					{
 						$query = "UPDATE USUARIOS SET Nombre = '{$nombre}' WHERE usuario = '{$usuario}'";
@@ -238,7 +235,12 @@
 							echo "Error: " . $query . "<br>" . $conexion->error;
 						}
 					}
-					//tras meter toda la información necesaria volvemos a login para que pueda iniciar sesión.
+					$location = "/var/www/html/public/{$_POST['usr']}.png";
+					if (move_uploaded_file($_FILES['perfimagen']['tmp_name'], $location)) {
+						echo 'Imagen guardada correctamente';
+					} else {
+						echo 'Error';
+					}
 					echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/login/login.php");</script>';
 				} 
 				else 
@@ -249,7 +251,7 @@
 	}
 	?>
 	<p><span class="error">* campo obligatorio</span></p>
-	<form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
+	<form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post" enctype="multipart/form-data">
 		<p>Nombre de usuario:</p>
 		<input type="text" class="casilla" name="usr" placeholder="Introduzca su nombre de usuario" autofocus>
 		<span class="error">* <?php echo $usuarioERR;?></span><br>
