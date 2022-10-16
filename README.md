@@ -10,11 +10,4 @@ Ir a la carpeta en la que se ha extraido el proyecto y ejecutar: $sudo ./carshow
     Seleccionar la primera opción escribiendo '1' en la terminal.
     Una vez hecho esto se vuelve a ejecutar el comando: $sudo ./carshow.sh
     Se selecciona la acción que se desea realizar escribiendo el número por la terminal.
-  
-Para la preentrega la aplicación no se puede navegar aún, por lo que por favor solo prueba que se instale bien y que se ha cargado correctamente la base de datos.
-  Para esto tras iniciar el servidor (opción 2) seleccione la opción 7 para abrir mysql.
-  # Ejecute los siguientes comandos:
-    mysql>USE COCHES;
-    mysql>SHOW TABLES;
-  si se muestran las tablas "USUARIOS" y "COCHES" entonces se ha cargado correctamente.
-  Para comprobar que la web también se ha montado correctamente se puede ir a la página temporal cuya URL se especifica al ejecutar carshow.sh.
+Para comprobar que la web también se ha montado correctamente se puede ir a la página temporal cuya URL se especifica al ejecutar carshow.sh.
