@@ -172,27 +172,33 @@
 			}
 		}
 	?>
-	<div><span class="error">* campo obligatorio</span></div>
+	<div><span class="error">*campo obligatorio</span></div>
 	<form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
-		<div>Modelo:*</div>
-		<input type="text" class="casilla" name="model" placeholder="Ej.: Batmóvil 2016" autofocus>
-		<span class="error"><?php echo $modelERR;?></span><br>
-		<div>Matrícula (Sin espacios):*</div>
+		<div>
+			<label for>Modelo:*</label></div>
+			<input type="text" class="casilla" name="model" placeholder="Ej.: Batmóvil 2016" autofocus>
+			<span class="error"><?php echo $modelERR;?></span><br>
+		<div>
+		<label for>Matrícula (Sin espacios):*</label></div>
 		<input type="text" class="casilla" name="platenum" placeholder="Especifique su matrícula">
 		<span class="error"><?php echo $matERR;?></span><br>
-		<div>Seleccione la imagen que desee adjuntar:*</div>
+		<div>
+		<label for>Seleccione la imagen que desee adjuntar:*</label></div>
  		<input type="file" id="imagen" name="imagen">
 		<span class="error"><?php echo $imgERR;?></span><br>
-		<div>Estado:*</div>
+		<div>
+		<label for>Estado:*</label></div>
 		<input type="radio" id="nuevo" class="radio" name="status" value="Nuevo">
 		<label for="nuevo">Nuevo</label><br>
 		<input type="radio" id="seminuevo" class="radio" name="status" value="Seminuevo">
 		<label for="seminuevo">Seminuevo</label><br>
 		<span class="error"><?php echo $estadoERR;?></span>
-		<div>Kilometraje:</div>
+		<div>
+		<label for>Kilometraje:</label></div>
 		<input type="text" class="casilla" name="km" placeholder="Introduzca los kilometros recorridos.">
 		<span class="error"><?php echo $kmERR;?></span><br>
-		<div>Precio:</div>
+		<div>
+		<label for>Precio:</label></div>
 		<input type="text" class="casilla" name="price" placeholder="Formato: 9999.99">
 		<span class="error"><?php echo $precioERR;?></span><br><br>
 		<div class="boton">
