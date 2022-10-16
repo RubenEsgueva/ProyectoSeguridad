@@ -39,9 +39,6 @@
         <input type="password" name="contrasena" placeholder="Contraseña"><br><br>
         <input type="submit" value="Log in">
     </form>
-    <?php include '/var/www/html/src/components/footer/footer.php'?>
-
-   
 </body>
 
 </html>
