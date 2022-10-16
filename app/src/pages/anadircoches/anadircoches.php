@@ -1,5 +1,8 @@
 <?php 
     session_start();
+    if (!isset($_SESSION['usuario'])) {
+        echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/catalogo/catalogo.php");</script>';
+    }
 ?>
 
 <!DOCTYPE html>
@@ -196,7 +199,7 @@
 		<div class="boton">
 		<input type="submit" class="boton" value="Confirmar"></div><br>
 		<span class="error"><?php echo $bdERR;?></span>
-		
+
 	</form>
 </body>
 </html>
