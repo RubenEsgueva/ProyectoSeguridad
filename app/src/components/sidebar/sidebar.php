@@ -19,6 +19,7 @@
         <button class="cancelar_modificacion">Cancelar</button>
         ';
         if ($_SESSION['error_modi'] !== '') {
+            //si hay algun error al modificar esto notificara al usuario
             echo '<p class="error">Error: El campo '.$_SESSION['error_modi'].' tiene mal formato.</p>';
         }
     echo '
