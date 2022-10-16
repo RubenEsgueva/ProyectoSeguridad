@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CarShow - Registrate</title>
 		<link rel="stylesheet" href="/var/www/html/src/pages/registro/registro.css">
+		<link rel="stylesheet" href="C:\Users\Leire Becerra\Documents\GitHub\carshow\app\src\pages\registro\registro.css">
 </head>
 <body>
 	<?php
