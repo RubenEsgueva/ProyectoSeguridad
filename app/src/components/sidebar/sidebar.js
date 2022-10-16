@@ -5,6 +5,7 @@ let sidebar = document.querySelector(".sidebar");
 let sidebar_modificar = document.querySelector(".sidebar_modificar");
 let cerrar_sesion = document.querySelector(".cerrar_sesion");
 let iniciar_sesion = document.querySelector(".iniciar_sesion");
+let registrarse = document.querySelector(".registrarse");
 let modificar_datos = document.querySelector(".modificar_datos");
 let cancelar_modificacion = document.querySelector(".cancelar_modificacion");
 let aceptar_modificacion = document.querySelector(".aceptar_modificacion");
@@ -39,6 +40,10 @@ cerrar_sesion.addEventListener("click", () => {
 
 iniciar_sesion.addEventListener("click", () => {
     window.location.replace("http://localhost:81/src/pages/login/login.php");
+});
+
+registrarse.addEventListener("click", () => {
+    window.location.replace("http://localhost:81/src/pages/registro/registro.php");
 });
 
 modificar_datos.addEventListener("click", () => {
