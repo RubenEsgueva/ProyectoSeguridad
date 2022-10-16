@@ -31,6 +31,8 @@ function iniciarServidor() {
     while [[ "$?" == "1" ]]; do
         docker exec -i $mysql_container_id sh -c 'exec mysql -uroot -proot1234' < "$(pwd)/database/database.sql" &> /dev/null
     done
+    docker exec -i carshow_web_1 /bin/bash -c "chown www-data /var/www/html/public"
+    docker exec -i carshow_web_1 /bin/bash -c "chmod -R 0755 /var/www/html/public"
     echo -e "\n[OK] Todo listo, visita la siguiente direccion en tu navegador: http://localhost:81/index.php"
     #firefox "http://localhost:81/index.php"
 }
