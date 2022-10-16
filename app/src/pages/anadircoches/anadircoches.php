@@ -153,6 +153,7 @@
 							echo "Error: " . $query . "<br>" . $conexion->error;
 						}
 					}
+					//para que se pueda ver la imagen en la web tenemos que importarla a donde podamos manejarla.
 					$location = "/var/www/html/public/matriculas/{$_POST['matricula']}.png";
 					if (move_uploaded_file($_FILES['imagen']['tmp_name'], $location)) {
 						echo 'Imagen guardada correctamente';
