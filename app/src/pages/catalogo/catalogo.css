@@ -9,4 +9,9 @@ body {
 
 hr.solid {
     border-top: 3px solid #bbb;
-  }
+}
+
+.coche_img {
+    width: 20em;
+    height: 15em;
+}
