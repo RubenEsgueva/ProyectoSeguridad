@@ -18,7 +18,7 @@ read -p "Opcion: " option
 echo ""
 
 function instalarDependencias() {
-    apt install docker docker-compose mysql-server mysql-client -y
+    apt install docker docker-compose -y
 }
 
 function iniciarServidor() {
@@ -26,10 +26,13 @@ function iniciarServidor() {
     docker-compose up -d
     mysql_container_id=$(docker container ls | grep mysql | cut -d " " -f 1)
     docker container ls &> /dev/null
+    echo -e "[*] Cargando toda la base de datos..."
     docker exec -i $mysql_container_id sh -c 'exec mysql -uroot -proot1234' < "$(pwd)/database/database.sql" &> /dev/null
     while [[ "$?" == "1" ]]; do
         docker exec -i $mysql_container_id sh -c 'exec mysql -uroot -proot1234' < "$(pwd)/database/database.sql" &> /dev/null
     done
+    docker exec -i carshow_web_1 /bin/bash -c "chown www-data /var/www/html/public"
+    docker exec -i carshow_web_1 /bin/bash -c "chmod -R 0755 /var/www/html/public"
     echo -e "\n[OK] Todo listo, visita la siguiente direccion en tu navegador: http://localhost:81/index.php"
     #firefox "http://localhost:81/index.php"
 }

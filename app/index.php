@@ -1,10 +1,5 @@
 <?php
-    session_start();
-    if (!isset($_SESSION['user_id'])) {
-        header("location: ./src/pages/login/login.php");
-    } else {
-        header("location: ./src/pages/catalogo/catalogo.php");
-    }
+    echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/catalogo/catalogo.php");</script>';
 ?>
 <!DOCTYPE html>
 <html lang="es">

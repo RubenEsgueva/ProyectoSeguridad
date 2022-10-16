@@ -14,44 +14,87 @@
 </head>
 <body>
 	<?php
-		function test_input($data){
+		$hostname = "db";
+		$username = "admin";
+		$password = "admin1234";
+		$db = "COCHES";
+	
+		$conexion = mysqli_connect($hostname, $username, $password, $db);
+		if ($conexion->connect_error)
+		{
+			die("Database connection failed: " . $coexion->connect_error);
+		}
+
+		function test_input($data)
+		{
 			$data = trim($data);
 			$data = stripslashes($data);
 			$data = htmlspecialchars($data);
 			return $data;
 		}
 		  
-	    $usuarioERR = $contrasenaERR = $contrasena2ERR = $correoERR = $nombreERR = $apellidoERR = $tlfERR = $DNIERR = $fechaERR = "";
-	    $correo = $nombre = $apellido = $tlf = $dni = $pswd = $pswd2 = $fecha = "";
+	    $usuarioERR = $perfimg = $contrasenaERR = $contrasena2ERR = $correoERR = $nombreERR = $apellidoERR = $tlfERR = $DNIERR = $fechaERR = "";
+	    $correo = $perfimgERR= $dni = $pswd = $pswd2 = "";
+		$valid = true;
 
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	    if (empty($_POST["usr"]))
 	    {
 	    	$usuarioERR = "Especificar un usuario es obligatorio.";
+			$valid = false;
 	    }
+		else
+		{
+			$usuario = $_POST["usr"];
+			$query = "SELECT * FROM USUARIOS WHERE usuario = '{$usuario}'";
+			$resultado = mysqli_query($conexion,$query);
+			if ($resultado->num_rows > 0) 
+			{
+				$usuarioERR = "Ese nombre de usario está en uso.";
+				$valid = false;
+			}
+		}
+
 	    if (empty($_POST["pswd"]))
 	    {
     		$contrasenaERR = "Especificar una contraseña es obligatorio.";
+			$valid = false;
 	    }
 	    else
 	    {
-		if (empty($_POST["pswd2"]))
-		{
-			$contrasena2ERR = "Por favor, verifique su contraseña.";
-		}
-		else
-		{
-			$pswd = test_input($_POST["pswd"]);
-			$pswd2 = test_input($_POST["pswd2"]);
-			if (strcmp($pswd,$pswd2))
+			if (empty($_POST["pswd2"]))
 			{
-				$contrasena2ERR = "Las contraseñas no coinciden.";
+				$contrasena2ERR = "Por favor, verifique su contraseña.";
+				$valid = false;
 			}
-		}
+			else
+			{
+				$pswd = test_input($_POST["pswd"]);
+				$pswd2 = test_input($_POST["pswd2"]);
+				if (strcmp($pswd,$pswd2))
+				{
+					$contrasena2ERR = "Las contraseñas no coinciden.";
+					$valid = false;
+				}
+			}
 	    }
+		
+		if (!empty($_POST["perfimagen"]))
+	    {
+			$exten_permit = array("jpg","jpeg","png","gif");
+			$perfimg = test_input($_POST["perfimagen"]);
+			$exten_img = pathinfo($perfimg, PATHINFO_EXTENSION);
+	    	if (!in_array($exten_img, $exten_permit))
+	    	{
+	    	    $perfimgERR = "El archivo adjuntado no tiene una extensión válida.";
+				$valid = false;
+	    	}
+		}
+
 	    if (empty($_POST["dni"]))
 	    {
 	    	$DNIERR = "El DNI es necesario para identificarse.";
+			$valid = false;
 	    }
 	    else
 	    {
@@ -59,12 +102,24 @@
 	    	if (!preg_match("/^[0-9]{8}-[A-Z]$/",$dni))
 	    	{
 	    	    $DNIERR = "El formato del DNI es incorrecto, debe ser: 11111111-Z.";
+				$valid = false;
 	    	}
+			else
+			{
+			    $letra= substr($dni, -1);
+		    	$numeros= substr($dni,0,8);
+		    	if (substr("TRWAGMYFPDXBNJZSQVHLCKE",$numeros%23,1)!=$letra)
+		    	{
+				$DNIERR = "La letra del DNI no se corresponde con el número, no es válido.";
+				$valid = false;
+		    	}
+			}
 	    }
 	    
 	    if (empty($_POST["mail"]))
 	    {
 	    	$correoERR = "Es necesario vincular la cuenta a un correo.";
+			$valid = false;
 	    }	    
 	    else
 	    {
@@ -72,6 +127,7 @@
     		if (!filter_var($correo, FILTER_VALIDATE_EMAIL))
     		{
       		    $correoERR = "El formato del correo es incorrecto.";
+				  $valid = false;
     		}
 	    }
 	    
@@ -81,6 +137,7 @@
 	    	if (!preg_match("/^[a-zA-Z]*$/",$nombre))
 	    	{
 	    	    $nombreERR = "El nombre solo puede contener letras.";
+				$valid = false;
 	    	}
 	    }
 	    
@@ -90,6 +147,7 @@
 	    	if (!preg_match("/^[a-zA-Z]*$/",$apellido))
 	    	{
 	    	    $apellidoERR = "El apellido solo puede contener letras.";
+				$valid = false;
 	    	}
 	    }
 	    
@@ -98,7 +156,8 @@
 	    	$tlf = test_input($_POST["tlf"]);
 	    	if (!preg_match("/^[0-9]{9}$/",$tlf))
 	    	{
-	    	    $tlfERR = "El teléfono solo puede contener números.";
+	    	    $tlfERR = "El teléfono solo puede estar formado por 9 números.";
+				$valid = false;
 	    	}
 	    }
 	    
@@ -110,6 +169,85 @@
 	    	    $fechanac = date('Y-m-d', $fecha);
 	    	}
 	    }
+
+		if ($valid)
+		{
+			$query = "INSERT INTO USUARIOS (DNI,email,pswd,usuario) VALUES ('{$dni}','{$correo}','{$pswd}','{$usuario}')";
+			if ($conexion->query($query) === TRUE) 
+				{
+					if (isset($nombre))
+					{
+						$query = "UPDATE USUARIOS SET Nombre = '{$nombre}' WHERE usuario = '{$usuario}'";
+						if ($conexion->query($query) === TRUE) 
+						{
+							echo "DATABASE UPDATED SUCCESFULLY";
+						}
+						else
+						{
+							echo "Error: " . $query . "<br>" . $conexion->error;
+						}
+					}
+					if (isset($apellido))
+					{
+						$query = "UPDATE USUARIOS SET Apellido = '{$apellido}' WHERE usuario = '{$usuario}'";
+						if ($conexion->query($query) === TRUE) 
+						{
+							echo "DATABASE UPDATED SUCCESFULLY";
+						}
+						else
+						{
+							echo "Error: " . $query . "<br>" . $conexion->error;
+						}
+					}
+					if (isset($tlf))
+					{
+						$query = "UPDATE USUARIOS SET Telefono = '{$tlf}' WHERE usuario = '{$usuario}'";
+						if ($conexion->query($query) === TRUE) 
+						{
+							echo "DATABASE UPDATED SUCCESFULLY";
+						}
+						else
+						{
+							echo "Error: " . $query . "<br>" . $conexion->error;
+						}
+					}
+					if (isset($fechanac))
+					{
+						$query = "UPDATE USUARIOS SET FechaNcto = '{$fechanac}' WHERE usuario = '{$usuario}'";
+						if ($conexion->query($query) === TRUE) 
+						{
+							echo "DATABASE UPDATED SUCCESFULLY";
+						}
+						else
+						{
+							echo "Error: " . $query . "<br>" . $conexion->error;
+						}
+					}
+					if (isset($perfimg))
+					{
+						$query = "UPDATE USUARIOS SET imagen = '{$perfimg}' WHERE usuario = '{$usuario}'";
+						if ($conexion->query($query) === TRUE) 
+						{
+							echo "DATABASE UPDATED SUCCESFULLY";
+						}
+						else
+						{
+							echo "Error: " . $query . "<br>" . $conexion->error;
+						}
+					}
+					$location = "/var/www/html/public/{$_POST['usr']}.png";
+					if (move_uploaded_file($_FILES['perfimagen']['tmp_name'], $location)) {
+						echo 'Imagen guardada correctamente';
+					} else {
+						echo 'Error';
+					}
+					echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/login/login.php");</script>';
+				} 
+				else 
+				{
+					echo "Error: " . $query . "<br>" . $conexion->error;
+				}
+		}
 	}
 	?>
 	<style>
@@ -134,7 +272,10 @@
 		<div>Confirmar contraseña:</div>
 		<input type="password" class="casilla" name="pswd2" placeholder="Repite tu contraseña.">
 		<span class="error">* <?php echo $contrasena2ERR;?></span><br>
-		<div>Correo electrónico:</div>
+		<p>Adjuntar una foto de perfil:</p>
+ 		<input type="file" id="perfimagen" name="perfimagen">
+		<span class="error"><?php echo $perfimgERR;?></span><br>
+		<p>Correo electrónico:</p>
 		<input type="text" class="casilla" name="mail" placeholder="yourmail@example.something">
 		<span class="error">* <?php echo $correoERR;?></span><br>
 		<div>Nombre:</div>

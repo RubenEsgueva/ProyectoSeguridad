@@ -34,6 +34,11 @@
             </form>
         </div>
     </div>
+    <form action="/server/login.php" method="post">
+        <input type="text" name="usuario" placeholder="Usuario"><br>
+        <input type="password" name="contrasena" placeholder="Contraseña"><br><br>
+        <input type="submit" value="Log in">
+    </form>
     <?php include '/var/www/html/src/components/footer/footer.php'?>
 
    

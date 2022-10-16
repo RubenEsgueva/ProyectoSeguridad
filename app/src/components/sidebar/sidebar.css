@@ -1,22 +1,73 @@
 .sidebar {
     position: absolute;
-    left: -12em;
+    right: -20em;
     top: 0;
-    width: 12em;
+    width: 20em;
     height: 100vh;
-    background-color: white;
+    background-color: red;
     display: flex;
     flex-direction: column;
     transition-duration: 1s;
 }
 
-.menu_icon_black {
-    margin: 0.5em;
-    width: 2em;
-    height: 1.5em;
-    align-self: flex-end;
+.sidebar_modificar {
+    display: none;
+    position: absolute;
+    right: -20em;
+    top: 0;
+    width: 20em;
+    height: 100vh;
+    background-color: red;
+    flex-direction: column;
+    transition-duration: 1s;
+}
+
+.usuario_img_sidebar {
+    margin-top: 1em;
+    margin-left: 1em;
+    width: 4em;
+    height: 3em;
+    border-radius: 50%;
+    align-self: flex-start;
+}
+
+.usuario_img_sidebar_modificar {
+    margin-top: 1em;
+    margin-left: 1em;
+    width: 4em;
+    height: 3em;
+    border-radius: 50%;
+    align-self: flex-start;
+}
+
+.cerrar_sidebar {
+    position: absolute;
+    width: 5em;
+    height: 2em;
+    top: 1em;
+    right: 1em;
+}
+
+.cerrar_sidebar_modificar {
+    position: absolute;
+    width: 5em;
+    height: 2em;
+    top: 1em;
+    right: 1em;
 }
 
 .menu_links {
     margin-left: 0.5em;
+}
+
+.datos_usuario {
+    margin: 0.5em;
+}
+
+input {
+    width: 10em;
+}
+
+.aceptar_modificacion {
+    width: 100%;
 }

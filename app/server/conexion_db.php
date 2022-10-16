@@ -1,9 +1,11 @@
 <?php
+    $hostname = "db";
+    $username = "admin";
+    $password = "admin1234";
+    $db = "COCHES";
 
-$conexion = mysqli_connect("localhost", "root", "", "prueba");
-
-/*if (isset($conexion)) {
-    echo "Conectado";
-}*/
-
+    $conexion = mysqli_connect($hostname, $username, $password, $db);
+    if ($conexion->connect_error) {
+        die("Database connection failed: " . $conn->connect_error);
+    }
 ?>
