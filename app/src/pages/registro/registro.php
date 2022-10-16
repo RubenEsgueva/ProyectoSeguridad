@@ -14,6 +14,17 @@
 </head>
 <body>
 	<?php
+		$hostname = "db";
+		$username = "admin";
+		$password = "admin1234";
+		$db = "COCHES";
+	
+		$conexion = mysqli_connect($hostname, $username, $password, $db);
+		if ($conexion->connect_error)
+		{
+			die("Database connection failed: " . $coexion->connect_error);
+		}
+
 		function test_input($data)
 		{
 			$data = trim($data);
@@ -24,22 +35,30 @@
 		  
 	    $usuarioERR = $perfimg = $contrasenaERR = $contrasena2ERR = $correoERR = $nombreERR = $apellidoERR = $tlfERR = $DNIERR = $fechaERR = "";
 	    $correo = $nombre = $perfimgERR = $apellido = $tlf = $dni = $pswd = $pswd2 = $fecha = "";
+		$valid = true;
 
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	    if (empty($_POST["usr"]))
 	    {
 	    	$usuarioERR = "Especificar un usuario es obligatorio.";
+			$valid = false;
 	    }
+		else
+		{
+			$usuario = $_POST["usr"];
+		}
 
 	    if (empty($_POST["pswd"]))
 	    {
     		$contrasenaERR = "Especificar una contraseña es obligatorio.";
+			$valid = false;
 	    }
 	    else
 	    {
 			if (empty($_POST["pswd2"]))
 			{
 				$contrasena2ERR = "Por favor, verifique su contraseña.";
+				$valid = false;
 			}
 			else
 			{
@@ -48,6 +67,7 @@
 				if (strcmp($pswd,$pswd2))
 				{
 					$contrasena2ERR = "Las contraseñas no coinciden.";
+					$valid = false;
 				}
 			}
 	    }
@@ -60,12 +80,14 @@
 	    	if (!in_array($exten_img, $exten_permit))
 	    	{
 	    	    $perfimgERR = "El archivo adjuntado no tiene una extensión válida.";
+				$valid = false;
 	    	}
 		}
 
 	    if (empty($_POST["dni"]))
 	    {
 	    	$DNIERR = "El DNI es necesario para identificarse.";
+			$valid = false;
 	    }
 	    else
 	    {
@@ -73,6 +95,7 @@
 	    	if (!preg_match("/^[0-9]{8}-[A-Z]$/",$dni))
 	    	{
 	    	    $DNIERR = "El formato del DNI es incorrecto, debe ser: 11111111-Z.";
+				$valid = false;
 	    	}
 			else
 			{
@@ -81,6 +104,7 @@
 		    	if (substr("TRWAGMYFPDXBNJZSQVHLCKE",$numeros%23,1)!=$letra)
 		    	{
 				$DNIERR = "La letra del DNI no se corresponde con el número, no es válido.";
+				$valid = false;
 		    	}
 			}
 	    }
@@ -88,6 +112,7 @@
 	    if (empty($_POST["mail"]))
 	    {
 	    	$correoERR = "Es necesario vincular la cuenta a un correo.";
+			$valid = false;
 	    }	    
 	    else
 	    {
@@ -95,6 +120,7 @@
     		if (!filter_var($correo, FILTER_VALIDATE_EMAIL))
     		{
       		    $correoERR = "El formato del correo es incorrecto.";
+				  $valid = false;
     		}
 	    }
 	    
@@ -104,6 +130,7 @@
 	    	if (!preg_match("/^[a-zA-Z]*$/",$nombre))
 	    	{
 	    	    $nombreERR = "El nombre solo puede contener letras.";
+				$valid = false;
 	    	}
 	    }
 	    
@@ -113,6 +140,7 @@
 	    	if (!preg_match("/^[a-zA-Z]*$/",$apellido))
 	    	{
 	    	    $apellidoERR = "El apellido solo puede contener letras.";
+				$valid = false;
 	    	}
 	    }
 	    
@@ -122,6 +150,7 @@
 	    	if (!preg_match("/^[0-9]{9}$/",$tlf))
 	    	{
 	    	    $tlfERR = "El teléfono solo puede estar formado por 9 números.";
+				$valid = false;
 	    	}
 	    }
 	    
@@ -133,6 +162,12 @@
 	    	    $fechanac = date('Y-m-d', $fecha);
 	    	}
 	    }
+
+		if ($valid)
+		{
+			$query = "INSERT INTO USUARIOS VALUES ('{$nombre}','{$apellido}','{$dni}','{$tlf}','{$fechanac}','{$correo}','{$pswd}','{$usuario}','{$perfimg}')";
+			mysqli_query($conexion, $query);
+		}
 	}
 	?>
 	<p><span class="error">* campo obligatorio</span></p>

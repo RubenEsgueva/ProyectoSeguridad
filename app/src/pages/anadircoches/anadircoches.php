@@ -22,7 +22,7 @@
 		$conexion = mysqli_connect($hostname, $username, $password, $db);
 		if ($conexion->connect_error)
 		{
-			die("Database connection failed: " . $conn->connect_error);
+			die("Database connection failed: " . $conexion->connect_error);
 		}
 
 		function test_input($data)
@@ -33,7 +33,7 @@
 			return $data;
 		}
 		$modelo = $matricula = $imagen = $estado = $kmtraje = $precio = "";
-		$modelERR = $matERR = $estadoERR = $imgERR = $kmERR = $precioERR = "";
+		$modelERR = $matERR = $estadoERR = $imgERR = $kmERR = $precioERR = $bdERR = "";
 		$valido = true;
 		if ($_SERVER["REQUEST_METHOD"] == "POST") 
 		{
@@ -55,6 +55,13 @@
 			else
 			{
 				$matricula = test_input($_POST["platenum"]);
+				/*$query = "SELECT * FROM COCHES WHERE matricula = '{$matricula}";
+				mysqli_query($conexion, $query);
+				if (mysqli_query($conexion, $query) === FALSE) 
+				{
+					$matERR = "La matrícula ya está registrada.";
+					$valido = false;
+				}*/
 			}
 
 			if (empty($_POST["imagen"]))
@@ -93,6 +100,11 @@
 					$valido = false;
 	    		}
 	    	}
+			else
+			{
+				$kmtraje = NULL;
+			}
+
 			if (!empty($_POST["price"]))
 	    	{
 	    		$precio = test_input($_POST["price"]);
@@ -102,10 +114,25 @@
 					$valido = false;
 	    		}
 	    	}
+			else
+			{
+				$precio = NULL;
+			}
+
 			if ($valido)
 			{
-				$query = "INSERT INTO COCHES VALUES($matricula,$modelo,'FoulRune',$estado,$kmtraje,$precio,$imagen)";
+				$usuario = $_SESSION['usuario'];
+				$dist = intval($kmtraje);
+				$query = "INSERT INTO COCHES VALUES ('{$matricula}', '{$modelo}', '{$usuario}', '{$estado}', '{$dist}', '{$precio}', '{$imagen}')";
 				mysqli_query($conexion, $query);
+				if ($conexion->query($query) === TRUE) 
+				{
+					echo "New record created successfully";
+				} 
+				else 
+				{
+					echo "Error: " . $query . "<br>" . $conexion->error;
+				}
 			}
 		}
 	?>
@@ -125,8 +152,6 @@
 		<label for="nuevo">Nuevo</label><br>
 		<input type="radio" id="seminuevo" class="radio" name="status" value="Seminuevo">
 		<label for="seminuevo">Seminuevo</label><br>
-		<input type="radio" id="segundamano" class="radio" name="status" value="Segunda Mano">
-		<label for="segundamano">Segunda mano</label><br>
 		<span class="error">* <?php echo $estadoERR;?></span>
 		<p>Kilometraje:</p>
 		<input type="text" class="casilla" name="km" placeholder="Introduzca los kilometros recorridos.">
@@ -134,7 +159,8 @@
 		<p>Precio:</p>
 		<input type="text" class="casilla" name="price" placeholder="Formato: 9999.99">
 		<span class="error"><?php echo $precioERR;?></span><br><br>
-		<input type="submit" class="boton" value="Confirmar">
+		<input type="submit" class="boton" value="Confirmar"><br>
+		<span class="error"><?php echo $bdERR;?></span>
 	</form>
 </body>
 </html>

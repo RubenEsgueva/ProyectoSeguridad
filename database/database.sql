@@ -16,9 +16,7 @@ CREATE TABLE USUARIOS (
   pswd varchar(20) DEFAULT NULL,
   usuario varchar(20) NOT NULL,
   imagen varchar(120),
-  PRIMARY KEY (DNI),
-  UNIQUE KEY ClaveUnica (email),
-  UNIQUE KEY usuario (usuario)
+  PRIMARY KEY (usuario),
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES USUARIOS WRITE;
@@ -28,7 +26,7 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS COCHES;
 
 CREATE TABLE COCHES (
-  matricula varchar(10) NOT NULL,
+  matricula varchar(15) NOT NULL,
   modelo varchar(25) DEFAULT NULL,
   usuario varchar(20) DEFAULT NULL,
   estado enum('nuevo','seminuevo') DEFAULT NULL,
