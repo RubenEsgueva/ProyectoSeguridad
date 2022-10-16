@@ -1,0 +1,58 @@
+
+body{
+    margin: 0; /* quitar márgenes por defecto */
+    padding: 0; /* quitar paddings por defecto */
+    box-sizing: border-box; /* para ajustar tamaño de elementos -> el padding y el borde no modifican el tamaño */
+    font-family: sans-serif;
+    text-align: center; /* para centrar todos los textos */
+
+    display:  flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background: url("../imagesIndex/fondo.png") no-repeat center center fixed;
+    background-size: cover;
+
+}
+
+.login {
+    width: 400px; 
+    height: 400px;
+    background-image: url("../imagesIndex/volante.png");
+    background-size: cover;
+    left: 40px;
+    align-items: center;
+    display:  flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.social-links {
+    position: relative;
+    padding: 0;
+    display: flex;
+    justify-content:center;
+    bottom: -110px;
+}
+.social, .social-links {
+    position:relative;
+    padding: 0px;
+    bottom:-110px;
+    
+}
+
+#tabla1{
+    font-size: 1.3em;
+    border-radius: 5px;
+    width: 140px;
+    height: 32px;
+    position: relative;
+    bottom: 10px;
+    border-radius: 5px;
+    background-color: black;
+}
+
+a {
+    color:red;
+}

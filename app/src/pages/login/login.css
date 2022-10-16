@@ -1,0 +1,64 @@
+body{
+    margin: 0; /* quitar márgenes por defecto */
+    padding: 0; /* quitar paddings por defecto */
+    box-sizing: border-box; /* para ajustar tamaño de elementos -> el padding y el borde no modifican el tamaño */
+    font-family: sans-serif;
+    background: whitesmoke ;
+    text-align: center; /* para centrar todos los textos */
+
+    display:  flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.derrape {
+    width:1000px;
+    height: 440px;
+    background-image: url("images/derrape.png");
+    background-size:cover;
+    padding:0;
+}
+.imagen {
+    width: 956px;
+    height: 490px;
+    background-image: url("images/minicedit.png");
+    background-size: cover;
+    background-position: 0 100;
+}
+.av {
+    margin: 0;
+    padding: 237px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.sinborde{
+    font-size: 1.3em;
+    border-radius: 5px;
+    border-color: black;
+    width: 140px;
+    height: 32px;
+}
+.login{
+    font-size: 0.8em;
+    position: relative;
+    bottom: 20px;
+    left: 108px;
+    border-radius: 5px;
+    height: 25px;
+    background-color:black;
+    color:rgb(253, 238, 196);
+    border-color: black;
+}
+.titulo {
+    width: 650px;
+    height: 165px;
+    background-image: url("images/titulo2edit.png");
+    background-size: cover;
+    background-position: 0 50;
+
+}
