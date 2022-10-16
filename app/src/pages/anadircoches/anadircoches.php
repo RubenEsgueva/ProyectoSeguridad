@@ -153,6 +153,12 @@
 							echo "Error: " . $query . "<br>" . $conexion->error;
 						}
 					}
+					$location = "/var/www/html/public/matriculas/{$_POST['matricula']}.png";
+					if (move_uploaded_file($_FILES['imagen']['tmp_name'], $location)) {
+						echo 'Imagen guardada correctamente';
+					} else {
+						echo 'Error';
+					}
 					//tras meter toda la información necesaria volvemos a catalogo donde ahora debería aparecer el nuevo vehículo.
 					echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/catalogo/catalogo.php");</script>';
 				} 
