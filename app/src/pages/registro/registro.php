@@ -112,36 +112,49 @@
 	    }
 	}
 	?>
-	<p><span class="error">* campo obligatorio</span></p>
+	<style>
+        form{
+            font-weight: bold;
+            color:#000000;
+        }
+        .boton{
+            font-weight:bolder;
+            color:rosybrown;
+        }
+    </style>
+
+	<div><span class="error">* campo obligatorio</span></div>
 	<form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
-		<p>Nombre de usuario:</p>
+		<div>Nombre de usuario:</div>
 		<input type="text" class="casilla" name="usr" placeholder="Introduzca su nombre de usuario" autofocus>
 		<span class="error">* <?php echo $usuarioERR;?></span><br>
-		<p>Contraseña:</p>
+		<div>Contraseña:</div>
 		<input type="password" class="casilla" name="pswd" placeholder="Mantén tu contraseña oculta.">
 		<span class="error">* <?php echo $contrasenaERR;?></span><br>
-		<p>Confirmar contraseña:</p>
+		<div>Confirmar contraseña:</div>
 		<input type="password" class="casilla" name="pswd2" placeholder="Repite tu contraseña.">
 		<span class="error">* <?php echo $contrasena2ERR;?></span><br>
-		<p>Correo electrónico:</p>
+		<div>Correo electrónico:</div>
 		<input type="text" class="casilla" name="mail" placeholder="yourmail@example.something">
 		<span class="error">* <?php echo $correoERR;?></span><br>
-		<p>Nombre:</p>
+		<div>Nombre:</div>
 		<input type="text" class="casilla" name="name" placeholder="Hermenegilda">
 		<span class="error"><?php echo $nombreERR;?></span><br>
-		<p>Apellido:</p>
+		<div>Apellido:</div>
 		<input type="text" class="casilla" name="surname" placeholder="Barinagarrementeria">
 		<span class="error"><?php echo $apellidoERR;?></span><br>
-		<p>DNI:</p>
+		<div>DNI:</div>
 		<input type="text" class="casilla" name="dni" placeholder="11111111-Z">
 		<span class="error">* <?php echo $DNIERR;?></span><br>
-		<p>Número de teléfono:</p>
+		<div>Número de teléfono:</div>
 		<input type="text" class="casilla" name="tlf" placeholder="NNNNNNNNN">
 		<span class="error"><?php echo $nameErr;?></span><br>
-		<p>Fecha de nacimiento:</p>
+		<div>Fecha de nacimiento:</div>
 		<input type="date" class="casilla" name="bdate" value="<?php echo date('Y-m-d'); ?>">
 		<span class="error"><?php echo $nameErr;?></span><br><br>
+		<div class="boton">
 		<input type="submit" class="boton" value="Confirmar">
+		</div>
 	</form>
 </body>
 </html>

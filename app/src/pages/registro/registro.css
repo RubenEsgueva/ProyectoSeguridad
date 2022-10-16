@@ -1,0 +1,78 @@
+body{
+    margin: 0; /* quitar márgenes por defecto */
+    padding: 0; /* quitar paddings por defecto */
+    box-sizing: border-box; /* para ajustar tamaño de elementos -> el padding y el borde no modifican el tamaño */
+    font-family: sans-serif;
+    text-align: center;
+    display:grid; /* para centrar todos los textos */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../images/fondo.png")/*no-repeat center center fixed*/;
+    background-size: cover;
+    height: 100vh;
+}
+form {
+
+    background-color: #f5f5f588;   /* Color de fondo */
+    border: 2px solid #eee;      /* borde para el formulario */
+    padding:20px;
+    -webkit-border-radius: 5px;  /* bordes redondeados */
+    -moz-border-radius: 4px; 
+    border-radius: 4px; 
+    width: max-content;
+    display:grid;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align:center;
+
+
+
+}
+
+.error {
+    color:red;
+    align-items:left;
+    display: grid;
+    justify-items: first baseline;
+}
+
+
+input, button {
+    grid-column: 2 / 3;
+}
+ 
+label {
+    float: left;
+    width: max-content;
+    grid-column: 1 / 2;
+    background-color: white;
+    box-sizing: content-box;
+    align-items: center;
+    justify-content: center;
+    margin:5px;
+    padding: 10px;
+    border-radius:4px;
+
+}
+ 
+input {
+    float: right;
+    width: calc(100% - 200px);
+    border-radius: 4px;
+    box-sizing:content-box;
+    width: 300px;
+    height: 30px;
+    box-shadow: #f5f5f588;
+    padding: 10px;
+    margin:5px;
+}
+ 
+.boton {
+    border-radius: 4px;
+    width: 100px;
+    align-items: center;
+    display:flex;
+    justify-content: center;
+}
