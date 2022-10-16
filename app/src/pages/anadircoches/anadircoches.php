@@ -1,8 +1,5 @@
 <?php 
     session_start();
-    if (!isset($_SESSION['usuario'])) {
-        echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/catalogo/catalogo.php");</script>';
-    }
 ?>
 
 <!DOCTYPE html>
@@ -172,39 +169,33 @@
 			}
 		}
 	?>
-	<div><span class="error">*campo obligatorio</span></div>
+	<div><span class="error">* campo obligatorio</span></div>
 	<form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
-		<div>
-			<label for>Modelo:*</label></div>
-			<input type="text" class="casilla" name="model" placeholder="Ej.: Batmóvil 2016" autofocus>
-			<span class="error"><?php echo $modelERR;?></span><br>
-		<div>
-		<label for>Matrícula (Sin espacios):*</label></div>
+		<div>Modelo:*</div>
+		<input type="text" class="casilla" name="model" placeholder="Ej.: Batmóvil 2016" autofocus>
+		<span class="error"><?php echo $modelERR;?></span><br>
+		<div>Matrícula (Sin espacios):*</div>
 		<input type="text" class="casilla" name="platenum" placeholder="Especifique su matrícula">
 		<span class="error"><?php echo $matERR;?></span><br>
-		<div>
-		<label for>Seleccione la imagen que desee adjuntar:*</label></div>
+		<div>Seleccione la imagen que desee adjuntar:*</div>
  		<input type="file" id="imagen" name="imagen">
 		<span class="error"><?php echo $imgERR;?></span><br>
-		<div>
-		<label for>Estado:*</label></div>
+		<div>Estado:*</div>
 		<input type="radio" id="nuevo" class="radio" name="status" value="Nuevo">
 		<label for="nuevo">Nuevo</label><br>
 		<input type="radio" id="seminuevo" class="radio" name="status" value="Seminuevo">
 		<label for="seminuevo">Seminuevo</label><br>
 		<span class="error"><?php echo $estadoERR;?></span>
-		<div>
-		<label for>Kilometraje:</label></div>
+		<div>Kilometraje:</div>
 		<input type="text" class="casilla" name="km" placeholder="Introduzca los kilometros recorridos.">
 		<span class="error"><?php echo $kmERR;?></span><br>
-		<div>
-		<label for>Precio:</label></div>
+		<div>Precio:</div>
 		<input type="text" class="casilla" name="price" placeholder="Formato: 9999.99">
 		<span class="error"><?php echo $precioERR;?></span><br><br>
 		<div class="boton">
 		<input type="submit" class="boton" value="Confirmar"></div><br>
 		<span class="error"><?php echo $bdERR;?></span>
-
+		
 	</form>
 </body>
 </html>
