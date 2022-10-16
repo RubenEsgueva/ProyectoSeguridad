@@ -5,6 +5,7 @@ if (!(username === "")) {
     document.querySelector(".usuario_img_sidebar_modificar").src = "/public/"+username+".png";
     document.querySelector(".usuario_img_navbar").src = "/public/"+username+".png";
     document.querySelector(".iniciar_sesion").style.display = "none";
+    document.querySelector(".registrarse").style.display = "none";
     document.querySelector(".modificar_datos").style.display = "block";
     document.querySelector(".cerrar_sesion").style.display = "block";
 
@@ -13,6 +14,7 @@ if (!(username === "")) {
     document.querySelector(".usuario_img_sidebar_modificar").src = "/public/usuario_default.png";
     document.querySelector(".usuario_img_navbar").src = "/public/usuario_default.png";
     document.querySelector(".iniciar_sesion").style.display = "block";
+    document.querySelector(".registrarse").style.display = "block";
     document.querySelector(".modificar_datos").style.display = "none";
     document.querySelector(".cerrar_sesion").style.display = "none";
 }
