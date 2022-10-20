@@ -1,0 +1,16 @@
++---------------+
+| SQL Injection |
++---------------+
+Iniciar Sesion:
+	- <username>'#
+	- <password>' or 1=1#
+
++--------------+
+| Criptografia |
++--------------+
+No usamos sha512+sal para almacenar contraseñas
+
++-----------------+
+| Diseño Inseguro |
++-----------------+
+Se puede eliminar un coche sin ser el dueño (sin iniciar sesión)
