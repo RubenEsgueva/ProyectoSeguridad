@@ -15,7 +15,7 @@ No usamos sha512+sal para almacenar contraseñas
 +-----------------+
 Se puede eliminar un coche sin ser el dueño (sin iniciar sesión)
 No debería dejar entrar a AnadirCoche sin tener sesión iniciada
-Hau quue impedir que el usuario pueda escribir codigo en el input de login
+Hay que impedir que el usuario pueda escribir codigo en el input de login
 
 +---------------------+
 | Falta funcionalidad |
