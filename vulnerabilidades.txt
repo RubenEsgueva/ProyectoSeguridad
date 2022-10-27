@@ -25,8 +25,10 @@ Hay que poder modificar los elementos del catálogo después de meterlos.
 | Errores varios      |
 +---------------------+
 AnadirCoches saltan todos los errores la primera vez que lo abres.
+
 +---------------------+
 | Fallos gráficos     |
 +---------------------+
 AnadirCoches no es facilmente comprensible
 Hay que implementar el diseño del Catalogo y de Detalles
+Ver detalles debería enseñar la foto en lugar del nombre la foto.
