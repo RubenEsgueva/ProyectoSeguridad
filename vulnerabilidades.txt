@@ -19,3 +19,13 @@ Se puede eliminar un coche sin ser el dueño (sin iniciar sesión)
 | Falta funcionalidad |
 +---------------------+
 Hay que poder modificar los elementos del catálogo después de meterlos.
+
++---------------------+
+| Errores varios      |
++---------------------+
+AnadirCoches saltan todos los errores la primera vez que lo abres.
++---------------------+
+| Fallos gráficos     |
++---------------------+
+AnadirCoches no es facilmente comprensible
+Hay que implementar el diseño del Catalogo y de Detalles
