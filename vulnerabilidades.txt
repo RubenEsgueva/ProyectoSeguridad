@@ -14,3 +14,8 @@ No usamos sha512+sal para almacenar contraseñas
 | Diseño Inseguro |
 +-----------------+
 Se puede eliminar un coche sin ser el dueño (sin iniciar sesión)
+
++---------------------+
+| Falta funcionalidad |
++---------------------+
+Hay que poder modificar los elementos del catálogo después de meterlos.
