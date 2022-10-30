@@ -13,6 +13,7 @@ echo -e "\t[4] Reiniciar el servidor."
 echo -e "\t[5] Mostrar el estado de los servicios de la web."
 echo -e "\t[6] Obtener una shell del codigo fuente."
 echo -e "\t[7] Obtener una shell de la base de datos mysql."
+echo -e "\t[8] Inicializar la base de datos mysql."
 echo ""
 read -p "Opcion: " option
 echo ""
@@ -22,15 +23,11 @@ function instalarDependencias() {
 }
 
 function iniciarServidor() {
+    sudo systemctl start docker
     docker build -t="carshow" .
     docker-compose up -d
-    mysql_container_id=$(docker container ls | grep mysql | cut -d " " -f 1)
     docker container ls &> /dev/null
-    echo -e "[*] Cargando toda la base de datos..."
-    docker exec -i $mysql_container_id sh -c 'exec mysql -uroot -proot1234' < "$(pwd)/database/database.sql" &> /dev/null
-    while [[ "$?" == "1" ]]; do
-        docker exec -i $mysql_container_id sh -c 'exec mysql -uroot -proot1234' < "$(pwd)/database/database.sql" &> /dev/null
-    done
+    inicializarBaseDeDatos
     usuario="www-data"
     docker exec -i carshow_web_1 /bin/bash -c "chown $usuario:$usuario /var/www/html/public" &> /dev/null
     docker exec -i carshow_web_1 /bin/bash -c "chmod -R 0755 /var/www/html/public" &> /dev/null
@@ -59,6 +56,16 @@ function obtenerShellMysql() {
     docker-compose exec db mysql -uadmin -padmin1234
 }
 
+function inicializarBaseDeDatos() {
+    echo -e "[*] Cargando toda la base de datos..."
+    mysql_container_id=$(docker container ls | grep mysql | cut -d " " -f 1)
+    docker exec -i $mysql_container_id sh -c 'exec mysql -uroot -proot1234' < "$(pwd)/database/database.sql" &> /dev/null
+    while [[ "$?" == "1" ]]; do
+        docker exec -i $mysql_container_id sh -c 'exec mysql -uroot -proot1234' < "$(pwd)/database/database.sql" &> /dev/null
+    done
+    echo -e "\n[OK] Base de datos inicializada."
+}
+
 case $option in
     1) instalarDependencias;;
     2) iniciarServidor;;
@@ -67,6 +74,7 @@ case $option in
     5) estadoServiciosDocker;;
     6) obtenerShellCodigoFuente;;
     7) obtenerShellMysql;;
+    8) inicializarBaseDeDatos;;
     *) echo "Opcion no valida";;
 esac
 
