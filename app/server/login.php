@@ -13,5 +13,4 @@
     } else {
         echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/login/login.php");</script>';
     }
-    include 'close_conexion_db.php';
 ?>
