@@ -2,8 +2,8 @@
 | SQL Injection |
 +---------------+
 Iniciar Sesion:
-	- <username>'#
-	- <password>' or 1=1#
+	- <username>'# (en este caso no podrá eliminar coches porque el usuario es distinto aunque se loguee)
+	- <password>' or 1=1# (en este caso si podrá eliminar coches porque el usuario es el mismo)
 
 +--------------+
 | Criptografia |
