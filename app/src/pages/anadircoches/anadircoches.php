@@ -1,8 +1,21 @@
 <?php 
     session_start();
-    if (!isset($_SESSION['usuario'])) {
-        echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/catalogo/catalogo.php");</script>';
-    }
+	/*if(isset($_POST) & !empty($_POST) )
+	{
+		if(isset($_POST['CSRF_token']))
+		{
+			if ($_POST['CSRF_token'] == $_SESSION['tokenAna'])
+			{
+				echo "CSRF Token Validation Success";
+			}
+			else
+			{
+				echo "Problem with CSRF Token Validation";
+			}
+		}
+	}
+	$token = md5(uniqid(rand(),true));
+	$_SESSION['tokenAna'] = $token;*/
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +55,7 @@
 		$modelERR = $matERR = $estadoERR = $imgERR = $kmERR = $precioERR = $bdERR = "";
 		$valido = true;
 		//Cada vez que se pulse el boton de confirmar habrá que comprobar el contenido de cada casilla.
-		if ($_SERVER["REQUEST_METHOD"] == "POST") 
+		if ($_SERVER["REQUEST_METHOD"] == "POST" and $_POST['CSRF_token'] == $_SESSION['tokenAna']) 
 		{
 			if (empty($_POST["model"]))
 	    	{
@@ -172,9 +185,12 @@
 				}
 			}
 		}
+		$token = md5(uniqid(rand(),true));
+		$_SESSION['tokenAna'] = $token;
 	?>
 	<div><span class="error">* campo obligatorio</span></div>
 	<form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
+		<input type="hidden" name="CSRF_token" value="<?php echo $token; ?>">
 		<div>Modelo:*</div>
 		<input type="text" class="casilla" name="model" placeholder="Ej.: Batmóvil 2016" autofocus>
 		<span class="error"><?php echo $modelERR;?></span><br>
@@ -199,7 +215,7 @@
 		<div class="boton">
 		<input type="submit" class="boton" value="Confirmar"></div><br>
 		<span class="error"><?php echo $bdERR;?></span>
-
+		
 	</form>
 </body>
 </html>
