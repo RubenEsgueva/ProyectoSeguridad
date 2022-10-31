@@ -1,9 +1,11 @@
-+---------------+
-| SQL Injection |
-+---------------+
-Iniciar Sesion:
-	- <username>'# (en este caso no podrá eliminar coches porque el usuario es distinto aunque se loguee)
-	- <password>' or 1=1# (en este caso si podrá eliminar coches porque el usuario es el mismo)
++------------------+
+| Vulnerabilidades |
++------------------+
+	LFI (Local File Inclusion): Nuestra web no es vulnerable a LFI
+	SQL Injection:
+		- A la hora de iniciar sesión se pueden dar los siguientes casos:
+			- Nombre de usuario: <username>'# (No podrá eliminar coches aunque haga bypass del login)
+			- Nombre de usuario correcto y Contraseña: <password>' or 1=1# (Si podrá eliminar coches)
 
 +--------------+
 | Criptografia |
