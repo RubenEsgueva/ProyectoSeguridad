@@ -1,11 +1,25 @@
 +------------------+
-| Vulnerabilidades |
+| Vulnerabilidades | nuestra web SI/NO es vulnerable
 +------------------+
-	LFI (Local File Inclusion): Nuestra web no es vulnerable a LFI
-	SQL Injection:
+	Comandos en terminal:
+		- Curl: SI
+			- Si ejecutamos el comando: curl -s "http://localhost:81/src/pages/catalogo/catalogo.php" podemos ver el contenido html de la página y a partir de ahí ir detectando nuevas rutas mediante los formularios POST o saber si hay algun comando php "system()" o "include()" que sea vulnerable
+			- Detectar si hay algun parametro GET y probar el html Injection (En nuestro caso no hay ningun parametro GET)
+			- SOLUCION: Poner el código en formato no legible (non human readable)
+	LFI (Local File Inclusion): NO
+		- Porque no usamos url parametrizadas
+		- Porque todos los includes son fijos, por lo que no se puede incluir otro fichero
+	RCE (Remote Code Execution): NO
+		- Porque no hacemos ninguna llamada al sistema
+		- Porque al no ser vulnerable a LFI entonces no se pueden ver usuarios ni contraseñas del sistema y no se puede hacer ssh
+	Log Poisoning: NO
+		- No es vulnerable a LFI así que no los es para Log Poisoning (curl -s -H "User-Agent: <?php system('whoami'); ?>" [url]) --> LFI de /var/log/apache2/access.log 
+	SQL Injection: SI
 		- A la hora de iniciar sesión se pueden dar los siguientes casos:
 			- Nombre de usuario: <username>'# (No podrá eliminar coches aunque haga bypass del login)
 			- Nombre de usuario correcto y Contraseña: <password>' or 1=1# (Si podrá eliminar coches)
+	HTML Injection / XSS (Cross Site Scripting): NO
+		- No tenemos inputs que interpreten codigo html3
 
 +--------------+
 | Criptografia |
@@ -15,9 +29,8 @@ No usamos sha512+sal para almacenar contraseñas
 +-----------------+
 | Diseño Inseguro |
 +-----------------+
-Se puede eliminar un coche sin ser el dueño (sin iniciar sesión)
+Se puede eliminar un coche sin ser el dueño (sin iniciar sesión) (Arreglado cambiando la condicion e iniciando la sesion(sin la sesion abierta no se podia saber quien era el usuario de la sesion))
 No debería dejar entrar a AnadirCoche sin tener sesión iniciada
-Hay que impedir que el usuario pueda escribir codigo en el input de login
 
 +---------------------+
 | Falta funcionalidad |
