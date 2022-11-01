@@ -25,7 +25,7 @@
 | Criptografia |
 +--------------+
 No usamos sha512+sal para almacenar contraseñas
-Uso del protocolo http en vez de https (para que la información se transmita cifrada y no en texto plano)
+Usamos del protocolo http en vez de https (para que la información se transmita cifrada y no en texto plano)
 
 +-----------------+
 | Diseño Inseguro |
