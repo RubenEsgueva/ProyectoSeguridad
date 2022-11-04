@@ -19,7 +19,11 @@
 			- Nombre de usuario: <username>'# (No podrá eliminar coches aunque haga bypass del login)
 			- Nombre de usuario correcto y Contraseña: <password>' or 1=1# (Si podrá eliminar coches)
 	HTML Injection / XSS (Cross Site Scripting): NO
-		- No tenemos inputs que interpreten codigo html3
+		- No tenemos inputs que interpreten codigo html3ç
+	Hay que eliminar el usuario de pruebas.
+	Hay que restringir las contraseñas para que no sean demasiado fáciles.
+	No usar "latest" al montar el docker, poner la última versión de manera manual
+	Hacer backups de manera regular.
 
 +--------------+
 | Criptografia |
