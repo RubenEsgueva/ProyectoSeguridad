@@ -1,0 +1,69 @@
++-------------------+
+| Control de acceso | El usuario solo tiene los permisos y puede realizar funcionalidades definidas por su rol
++-------------------+
+	- Modificacion de parametros URL (RCE, LFI, etc...): validar los datos de entrada de los parametros URL
+	- Gestión de acceso a las peticiones API del servidor (POST,GET,...): Origen de la petición, dominio de valores aceptados (RCE), etc...
+		-Acceso API Peticiones sin control (origen de la petición prevenir contenidos para solo poder dejar pasar los necesarios, texto plano sin codigos de escape...)
+	- Mala validación de los datos (identificación), el sistema te identifica mal y puedes modificar datos de otros usuarios: SQL Injection, mala lógica, ...
+	-Escalación de privilegios:
+		-Actuar como admin siendo usuario modificando JWT
+		-Mala configuración CORS: Definir bien la whitelist o los origenes permitidos: https://victorroblesweb.es/2017/04/23/cabeceras-http-php-permitir-acceso-cors/
+	-Metadatos en la raíz del proyecto .git, etc...
+	-Limitar la tasa de peticiones API y alertar si hay un numero de intentos fallidos mediante los metodos de acceso
+	-JWT:
+		-Usar OAuth
+		-Editar JWT o cookies para hacerse pasar por admin
+
++-----------------------+
+| Fallos criptográficos |
++-----------------------+
+	-Encriptar y almacenar contraseñas encriptadas con SAL
+	-Uso de protocolos seguros (HTTPS,...)
+	-Ciclo de vida de una contraseña:
+		-Generación: Usar algoritmos de encriptación robustos (sha512 por ejemplo y pedirle al usuario que use contraseñas robustas (myusculas, numeros, simbolos, minimo de 8 caracteres,etc...))
+			-password-based key derivation functions (PBKDFs)
+			-SAL fuerte (no debil)
+		-Conexiones seguras: HTTPS o TLS para evitar ataques MITM
+		-Uso: Validar bien las claves para una autorización correcta
+		-Rotación: Cuando termina el periodo de validez, se descifra y se vuelve a cifrar
+		-Revocación: Crear certificados de revocación por si una clave es comprometida (La clave comprometida hay que mantenerla por si hay algún juicio para recuperar datos)
+		-Buenas prácticas: Automatizar los procesos, particionar las claves en varios trozos y juntarlos, de manera que si un hacker consigue un trozo, no lo consigue entero...
+	-Certificados del servidor validos y de confianza (garantizado por un AC)
+	-Encriptar los datos fuera de la base de datos añadiendo SAL (hash+SAL) y luego meterlos en la base de datos encriptados
+	-SQL Injection:
+		-Los datos del usuario no se validan
+		-Fallos de validación: consultas sin "escaping", llamadas no parametrizadas (se pueden cerrar las comillas o poner comentarios, no se trata de texto plano)
++-----------------+
+| Diseño inseguro |
++-----------------+
+	-Detección de Bots (muchas peticiones en poco tiempo)
++-----------------------------------------+
+| Configuracion de seguridad insuficiente |
++-----------------------------------------+
+	-LFI o RCE (el usuario puede conseguir información crucial)
+	-Puertos abiertos innecesarios (analisis de puertos con NMAP)
+	-Opciones de seguridad en Frameworks
++----------------------------------------------------------+
+| Uso de herramientas vulnerables y obsoletas, sin soporte |
++----------------------------------------------------------+
+	- ¿Usamos alguna librería obsoleta?
++-----------------------------------------+
+| Fallos de identificacion y atenticacion |
++-----------------------------------------+
+	- No usar hash+SAL --> Permite el brute force attack
+	- Autenticación multi-factor
+	- Exponer id de sesiones en la url (parametrizar ids)
+	- No invalidad sesiones después de un tiempo de inactividad
++----------------------+
+| Fallos de integridad |
++----------------------+
+	- Uso de modulos o librerías sin confianza (puede contener código malicioso sin darnos cuenta)
++---------------------------------------+
+| Fallos de monitorización de seguridad |
++---------------------------------------+
+	- Hay que generar logs de intentos de login, login fallidos, Modificaciones de datos, peticiones del servidor (GET, POST...) con el origen e identificacion de la peticion, control de acceso, validaciones de inputs, etc...
+	- Mensajes de errores inadecuados en los logs...
+	- No se generan logs
+	- Los logs solo se almacenan el local
+	- Hay que hacer los logs de manera grepeable (quiere decir que tiene una estructura organizada para poder sacar y clasificar informacion automatizadamente)
+
