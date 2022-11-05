@@ -1,8 +1,8 @@
 <?php
     session_start();
     include 'conexion_db.php';
-    $usuario = $_POST['usuario'];
-    $contrasena = $_POST['contrasena'];
+    $usuario = mysqli_real_escape_string($conexion, $_POST['usuario']); //Escapar el nombre de usuario
+    $contrasena = mysqli_real_escape_string($conexion, $_POST['contrasena']); //Escapar la contraseña22
     $query = "SELECT * FROM USUARIOS WHERE usuario = '$usuario' AND pswd = '$contrasena'";
     $resultado = mysqli_query($conexion,$query);
     include 'close_conexion_db.php';
