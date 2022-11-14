@@ -1,0 +1,2 @@
+172.18.0.1-81-anadircoches-LechugAsesina45' #-November 14, 2022, 12:34 pm-POST sin token o primer acceso a la pagina-el POST no se ha procesado
+172.18.0.1-81-anadircoches-LechugAsesina45' #-November 14, 2022, 12:34 pm-INSERT INTO COCHES VALUES ('4206hah', 'Salchicar 600', '', 'Seminuevo', '', '0.05', 'DiagramaBD.png')-Se ha anadido correctamente
