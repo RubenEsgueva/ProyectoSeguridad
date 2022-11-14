@@ -25,6 +25,7 @@ function instalarDependencias() {
 }
 
 function iniciarServidor() {
+    chmod +x backup.sh
     sudo systemctl start docker
     docker build -t="carshow" .
     docker-compose up -d
@@ -38,6 +39,7 @@ function iniciarServidor() {
 }
 
 function apagarServidor() {
+    chmod -x backup.sh
     docker-compose down
     rm -rf mysql 2&> /dev/null
 }
