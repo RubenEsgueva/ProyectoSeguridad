@@ -59,7 +59,7 @@ function iniciarServidor() {
     usuario="www-data"
     docker exec -i carshow_web_1 /bin/bash -c "chown $usuario:$usuario /var/www/html/public" &> /dev/null
     docker exec -i carshow_web_1 /bin/bash -c "chmod -R 0755 /var/www/html/public" &> /dev/null
-    echo -e "\n[OK] Todo listo, visita la siguiente direccion en tu navegador: http://localhost:81/index.php"
+    echo -e "\n[OK] Todo listo, visita la siguiente direccion en tu navegador: http://"$(curl ifconfig.me)":80/index.php"
     #firefox "http://localhost:81/index.php"
 }
 
