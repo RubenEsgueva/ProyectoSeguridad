@@ -14,6 +14,8 @@ echo -e "\t[5] Mostrar el estado de los servicios de la web."
 echo -e "\t[6] Obtener una shell del codigo fuente."
 echo -e "\t[7] Obtener una shell de la base de datos mysql."
 echo -e "\t[8] Inicializar la base de datos mysql."
+echo -e "\t[9] Configurar cron para realizar backups."
+echo -e "\t[10] Mostrar logs del servidor web."
 echo ""
 read -p "Opcion: " option
 echo ""
@@ -66,6 +68,14 @@ function inicializarBaseDeDatos() {
     echo -e "\n[OK] Base de datos inicializada."
 }
 
+function configurarCron() {
+    crontab -e
+}
+
+function mostrarLogs() {
+    echo "Todavía no está implementado visualizar los logs..."
+}
+
 case $option in
     1) instalarDependencias;;
     2) iniciarServidor;;
@@ -75,6 +85,8 @@ case $option in
     6) obtenerShellCodigoFuente;;
     7) obtenerShellMysql;;
     8) inicializarBaseDeDatos;;
+    9) configurarCron;;
+    10) mostrarLogs;;
     *) echo "Opcion no valida";;
 esac
 
