@@ -24,19 +24,27 @@ function instalarDependencias() {
     sudo apt install docker docker-compose apache2 openssl -y
 }
 
-function iniciarServidor() { 
+function iniciarServidor() {
+    sudo chmod 777 app/logs
     sudo a2enmod ssl
-    mkdir virtualhost &> /dev/null
-    config="./virtualhost/carshow.conf"
+    /bin/cat certificados/certificado.crt &> /dev/null
+    if [[ "$?" != "0" ]]; then
+        mkdir certificados &> /dev/null
+        sudo openssl genrsa -out certificados/llave.key 2048
+        sudo openssl req -new -key certificados/llave.key -out certificados/servidor.csr
+        sudo openssl x509 -req -days 365 -in certificados/servidor.csr -signkey certificados/llave.key -out certificados/certificado.crt
+    fi
+    config="virtualhost/carshow.conf"
+    rm virtualhost/carshow.conf
     sudo sh -c 'echo "<VirtualHost *:80>" >> '$config
     sudo sh -c 'echo "      Redirect / https://'$(curl ifconfig.me)'" >> '$config
     sudo sh -c 'echo "</VirtualHost>" >> '$config
     sudo sh -c 'echo "" >> '$config
     sudo sh -c 'echo "<VirtualHost *:443>" >> '$config
     sudo sh -c 'echo "      SSLEngine on" >> '$config
-    sudo sh -c 'echo "      SSLCertificateFile /var/imported/ssl/certificado.crt" >> '$config
-    sudo sh -c 'echo "      SSLCertificateKeyFile /var/imported/ssl/llave.key" >> '$config
-    sudo sh -c 'echo "      SSLCertificateChainFile /var/imported/ssl/servidor.csr" >> '$config
+    sudo sh -c 'echo "      SSLCertificateFile certificados/certificado.crt" >> '$config
+    sudo sh -c 'echo "      SSLCertificateKeyFile certificados/llave.key" >> '$config
+    sudo sh -c 'echo "      SSLCertificateChainFile certificados/server.csr" >> '$config
     sudo sh -c 'echo "      ServerAdmin example@localhost.com" >> '$config
     sudo sh -c 'echo "      <Directory /var/www/html/>" >> '$config
     sudo sh -c 'echo "              AllowOverride all" >> '$config
@@ -46,10 +54,6 @@ function iniciarServidor() {
     sudo sh -c 'echo "      LogLevel warn" >> '$config
     sudo sh -c 'echo "      CustomLog /var/log/apache2/error.log combined" >> '$config
     sudo sh -c 'echo "</VirtualHost>" >> '$config
-    mkdir certificados &> /dev/null
-    sudo openssl genrsa -out certificados/llave.key 2048
-    sudo openssl req -new -key certificados/llave.key -out certificados/servidor.csr
-    sudo openssl x509 -req -days 365 -in certificados/servidor.csr -signkey certificados/llave.key -out certificados/certificado.crt
     chmod +x backup.sh
     sudo systemctl start docker
     docker build -t="carshow" .
@@ -64,8 +68,6 @@ function iniciarServidor() {
 }
 
 function apagarServidor() {
-    rm -rf certificados &> /dev/null
-    rm -rf virtualhost &> /dev/null
     chmod -x backup.sh
     docker-compose down
     rm -rf mysql 2&> /dev/null
