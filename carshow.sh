@@ -35,7 +35,8 @@ function iniciarServidor() {
         sudo openssl x509 -req -days 365 -in certificados/servidor.csr -signkey certificados/llave.key -out certificados/certificado.crt
     fi
     config="virtualhost/carshow.conf"
-    rm virtualhost/carshow.conf
+    rm virtualhost/carshow.conf &> /dev/null
+    mkdir virtualhost &> /dev/null
     sudo sh -c 'echo "<VirtualHost *:80>" >> '$config
     sudo sh -c 'echo "      Redirect / https://'$(curl ifconfig.me)'" >> '$config
     sudo sh -c 'echo "</VirtualHost>" >> '$config
