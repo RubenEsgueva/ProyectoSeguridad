@@ -16,23 +16,15 @@
 	<?php
 		//este archivo y registro.php cumplen una función muy similar por lo que en su mayoría será la misma explicación.
 		//para guardar datos hace falta conectarse a la base de datos.
-		$hostname = "db";
-		$username = "admin";
-		$password = "admin1234";
-		$db = "COCHES";
+		include '../../../server/conexion_db.php';
 		$origen= "anadircoches";
-	
-		$conexion = mysqli_connect($hostname, $username, $password, $db);
-		if ($conexion->connect_error)
-		{
-			die("Database connection failed: " . $conexion->connect_error);
-		}
 		//este es un metodo de seguridad, obtenido de: https://www.w3schools.com/php/php_form_validation.asp
 		function test_input($data)
 		{
 			$data = trim($data);
 			$data = stripslashes($data);
 			$data = htmlspecialchars($data);
+			//$data = mysqli_real_escape_string($conexion, $data);
 			return $data;
 		}
 

@@ -16,22 +16,15 @@
 	<?php
 		//este archivo y anadircoches.php cumplen una función muy similar por lo que en su mayoría será la misma explicación.
 		//para guardar datos hace falta conectarse a la base de datos.
-		$hostname = "db";
-		$username = "admin";
-		$password = "admin1234";
-		$db = "COCHES";
-	
-		$conexion = mysqli_connect($hostname, $username, $password, $db);
-		if ($conexion->connect_error)
-		{
-			die("Database connection failed: " . $coexion->connect_error);
-		}
+		$origen= "registro";
+		include '../../../server/conexion_db.php';
 		//este es un metodo de seguridad, obtenido de: https://www.w3schools.com/php/php_form_validation.asp
 		function test_input($data)
 		{
 			$data = trim($data);
 			$data = stripslashes($data);
 			$data = htmlspecialchars($data);
+			//l$data = mysqli_real_escape_string($conexion, $data);
 			return $data;
 		}
 		  
@@ -39,222 +32,205 @@
 	    $correo = $perfimgERR= $dni = $pswd = $pswd2 = "";
 		$valid = true;
 		//Cada vez que se pulse el boton de confirmar habrá que comprobar el contenido de cada casilla.
-	if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	    if (empty($_POST["usr"]))
-	    {
-	    	$usuarioERR = "Especificar un usuario es obligatorio.";
-			$valid = false;
-	    }
-		else
+		if ($_SERVER["REQUEST_METHOD"] == "POST" and $_POST['CSRF_token'] == $_SESSION['tokenReg'])
 		{
-			$usuario = $_POST["usr"];
-			$query = "SELECT * FROM USUARIOS WHERE usuario = '{$usuario}'";
-			$resultado = mysqli_query($conexion,$query);
-			if ($resultado->num_rows > 0) 
+			if (empty($_POST["usr"]))
 			{
-				$usuarioERR = "Ese nombre de usario está en uso.";
-				$valid = false;
-			}
-		}
-
-	    if (empty($_POST["pswd"]))
-	    {
-    		$contrasenaERR = "Especificar una contraseña es obligatorio.";
-			$valid = false;
-	    }
-	    else
-	    {
-			if (empty($_POST["pswd2"]))
-			{
-				$contrasena2ERR = "Por favor, verifique su contraseña.";
+				$usuarioERR = "Especificar un usuario es obligatorio.";
 				$valid = false;
 			}
 			else
 			{
-				$pswd = test_input($_POST["pswd"]);
-				$pswd2 = test_input($_POST["pswd2"]);
-				if (strcmp($pswd,$pswd2))
+				$usuario = test_input($_POST["usr"]);
+				$query = "SELECT * FROM USUARIOS WHERE usuario = '{$usuario}'";
+				$resultado = mysqli_query($conexion,$query);
+				if ($resultado->num_rows > 0) 
 				{
-					$contrasena2ERR = "Las contraseñas no coinciden.";
+					$usuarioERR = "Ese nombre de usario está en uso.";
 					$valid = false;
 				}
 			}
-	    }
-		
-		if (!empty($_POST["perfimagen"]))
-	    {
-			$exten_permit = array("jpg","jpeg","png","gif");
-			$perfimg = test_input($_POST["perfimagen"]);
-			$exten_img = pathinfo($perfimg, PATHINFO_EXTENSION);
-	    	if (!in_array($exten_img, $exten_permit))
-	    	{
-	    	    $perfimgERR = "El archivo adjuntado no tiene una extensión válida.";
+	
+			if (empty($_POST["pswd"]))
+			{
+				$contrasenaERR = "Especificar una contraseña es obligatorio.";
 				$valid = false;
-	    	}
-		}
-
-	    if (empty($_POST["dni"]))
-	    {
-	    	$DNIERR = "El DNI es necesario para identificarse.";
-			$valid = false;
-	    }
-	    else
-	    {
-	    	$dni = test_input($_POST["dni"]);
-	    	if (!preg_match("/^[0-9]{8}-[A-Z]$/",$dni))
-	    	{
-	    	    $DNIERR = "El formato del DNI es incorrecto, debe ser: 11111111-Z.";
-				$valid = false;
-	    	}
+			}
 			else
 			{
-			    $letra= substr($dni, -1);
-		    	$numeros= substr($dni,0,8);
-		    	if (substr("TRWAGMYFPDXBNJZSQVHLCKE",$numeros%23,1)!=$letra)
-		    	{
-				$DNIERR = "La letra del DNI no se corresponde con el número, no es válido.";
-				$valid = false;
-		    	}
-			}
-	    }
-	    
-	    if (empty($_POST["mail"]))
-	    {
-	    	$correoERR = "Es necesario vincular la cuenta a un correo.";
-			$valid = false;
-	    }	    
-	    else
-	    {
-	    	$correo = test_input($_POST["mail"]);
-    		if (!filter_var($correo, FILTER_VALIDATE_EMAIL))
-    		{
-      		    $correoERR = "El formato del correo es incorrecto.";
-				  $valid = false;
-    		}
-	    }
-	    
-	    if (!empty($_POST["name"]))
-	    {
-	    	$nombre = test_input($_POST["name"]);
-	    	if (!preg_match("/^[a-zA-Z]*$/",$nombre))
-	    	{
-	    	    $nombreERR = "El nombre solo puede contener letras.";
-				$valid = false;
-	    	}
-	    }
-	    
-	    if (!empty($_POST["surname"]))
-	    {
-	    	$apellido = test_input($_POST["surname"]);
-	    	if (!preg_match("/^[a-zA-Z]*$/",$apellido))
-	    	{
-	    	    $apellidoERR = "El apellido solo puede contener letras.";
-				$valid = false;
-	    	}
-	    }
-	    
-	    if (!empty($_POST["tlf"]))
-	    {
-	    	$tlf = test_input($_POST["tlf"]);
-	    	if (!preg_match("/^[0-9]{9}$/",$tlf))
-	    	{
-	    	    $tlfERR = "El teléfono solo puede estar formado por 9 números.";
-				$valid = false;
-	    	}
-	    }
-	    
-	    if (!empty($_POST["bdate"]))
-	    {
-	    	$fecha = strtotime($_POST['bdate']);
-	    	if ($fecha)
-	    	{
-	    	    $fechanac = date('Y-m-d', $fecha);
-	    	}
-	    }
-		//si todos los contenidos cumplen las condiciones entonces podremos añadir el elemento a la base de datos.
-		if ($valid)
-		{	
-			//primero metemos los datos que son obligatorios.
-			$query = "INSERT INTO USUARIOS (DNI,email,pswd,usuario) VALUES ('{$dni}','{$correo}','{$pswd}','{$usuario}')";
-			if ($conexion->query($query) === TRUE) 
+				if (empty($_POST["pswd2"]))
 				{
-					//tras haber creado ya la fila con los datos principales vamos comprobando que datos que se pueden quedar vacíos hay puestos.
-					if (isset($nombre))
-					{
-						$query = "UPDATE USUARIOS SET Nombre = '{$nombre}' WHERE usuario = '{$usuario}'";
-						if ($conexion->query($query) === TRUE) 
-						{
-							echo "DATABASE UPDATED SUCCESFULLY";
-						}
-						else
-						{
-							echo "Error: " . $query . "<br>" . $conexion->error;
-						}
-					}
-					if (isset($apellido))
-					{
-						$query = "UPDATE USUARIOS SET Apellido = '{$apellido}' WHERE usuario = '{$usuario}'";
-						if ($conexion->query($query) === TRUE) 
-						{
-							echo "DATABASE UPDATED SUCCESFULLY";
-						}
-						else
-						{
-							echo "Error: " . $query . "<br>" . $conexion->error;
-						}
-					}
-					if (isset($tlf))
-					{
-						$query = "UPDATE USUARIOS SET Telefono = '{$tlf}' WHERE usuario = '{$usuario}'";
-						if ($conexion->query($query) === TRUE) 
-						{
-							echo "DATABASE UPDATED SUCCESFULLY";
-						}
-						else
-						{
-							echo "Error: " . $query . "<br>" . $conexion->error;
-						}
-					}
-					if (isset($fechanac))
-					{
-						$query = "UPDATE USUARIOS SET FechaNcto = '{$fechanac}' WHERE usuario = '{$usuario}'";
-						if ($conexion->query($query) === TRUE) 
-						{
-							echo "DATABASE UPDATED SUCCESFULLY";
-						}
-						else
-						{
-							echo "Error: " . $query . "<br>" . $conexion->error;
-						}
-					}
-					if (isset($perfimg))
-					{
-						$query = "UPDATE USUARIOS SET imagen = '{$perfimg}' WHERE usuario = '{$usuario}'";
-						if ($conexion->query($query) === TRUE) 
-						{
-							echo "DATABASE UPDATED SUCCESFULLY";
-						}
-						else
-						{
-							echo "Error: " . $query . "<br>" . $conexion->error;
-						}
-					}
-					//para que se pueda ver la imagen en la web tenemos que importarla a donde podamos manejarla.
-					$location = "/var/www/html/public/{$_POST['usr']}.png";
-					if (move_uploaded_file($_FILES['perfimagen']['tmp_name'], $location)) {
-						echo 'Imagen guardada correctamente';
-					} else {
-						echo 'Error';
-					}
-					//tras meter toda la información necesaria volvemos a catalogo donde ahora debería aparecer el nuevo vehículo.
-					echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/login/login.php");</script>';
-				} 
-				else 
-				{
-					echo "Error: " . $query . "<br>" . $conexion->error;
+					$contrasena2ERR = "Por favor, verifique su contraseña.";
+					$valid = false;
 				}
+				else
+				{
+					$pswd = test_input($_POST["pswd"]);
+					$pswd2 = test_input($_POST["pswd2"]);
+					if (strcmp($pswd,$pswd2))
+					{
+						$contrasena2ERR = "Las contraseñas no coinciden.";
+						$valid = false;
+					}
+				}
+			}
+			
+			if (!empty($_POST["perfimagen"]))
+			{
+				$exten_permit = array("jpg","jpeg","png","gif");
+				$perfimg = test_input($_POST["perfimagen"]);
+				$exten_img = pathinfo($perfimg, PATHINFO_EXTENSION);
+				if (!in_array($exten_img, $exten_permit))
+				{
+					$perfimgERR = "El archivo adjuntado no tiene una extensión válida.";
+					$valid = false;
+				}
+			}
+	
+			if (empty($_POST["dni"]))
+			{
+				$DNIERR = "El DNI es necesario para identificarse.";
+				$valid = false;
+			}
+			else
+			{
+				$dni = test_input($_POST["dni"]);
+				if (!preg_match("/^[0-9]{8}-[A-Z]$/",$dni))
+				{
+					$DNIERR = "El formato del DNI es incorrecto, debe ser: 11111111-Z.";
+					$valid = false;
+				}
+				else
+				{
+					$letra= substr($dni, -1);
+					$numeros= substr($dni,0,8);
+					if (substr("TRWAGMYFPDXBNJZSQVHLCKE",$numeros%23,1)!=$letra)
+					{
+					$DNIERR = "La letra del DNI no se corresponde con el número, no es válido.";
+					$valid = false;
+					}
+				}
+			}
+			
+			if (empty($_POST["mail"]))
+			{
+				$correoERR = "Es necesario vincular la cuenta a un correo.";
+				$valid = false;
+			}	    
+			else
+			{
+				$correo = test_input($_POST["mail"]);
+				if (!filter_var($correo, FILTER_VALIDATE_EMAIL))
+				{
+					  $correoERR = "El formato del correo es incorrecto.";
+					  $valid = false;
+				}
+			}
+			
+			if (!empty($_POST["name"]))
+			{
+				$nombre = test_input($_POST["name"]);
+				if (!preg_match("/^[a-zA-Z]*$/",$nombre))
+				{
+					$nombreERR = "El nombre solo puede contener letras.";
+					$valid = false;
+				}
+			}
+			
+			if (!empty($_POST["surname"]))
+			{
+				$apellido = test_input($_POST["surname"]);
+				if (!preg_match("/^[a-zA-Z]*$/",$apellido))
+				{
+					$apellidoERR = "El apellido solo puede contener letras.";
+					$valid = false;
+				}
+			}
+			
+			if (!empty($_POST["tlf"]))
+			{
+				$tlf = test_input($_POST["tlf"]);
+				if (!preg_match("/^[0-9]{9}$/",$tlf))
+				{
+					$tlfERR = "El teléfono solo puede estar formado por 9 números.";
+					$valid = false;
+				}
+			}	
+			
+			if (!empty($_POST["bdate"]))
+			{
+				$fecha = test_input(strtotime($_POST['bdate']));
+				if ($fecha)
+				{
+					$fechanac = date('Y-m-d', $fecha);
+				}
+			}
+			if (empty($dni) and empty($correo) and empty($pswd) and empty($pswd2) and empty($usuario) and empty($estado) and empty($perfimg))
+			{
+			
+			}
+			else
+			{
+				$enviado="INSERT INTO USUARIOS VALUES ('{$nombre}','{$apellido}','{$dni}','{$tlf}','{$fechanac}','{$correo}','{$pswd}','{$usuario}','{$perfimg}')";
+				if ($valid)
+				{
+					$resultado="Se ha anadido correctamente";
+				}
+				else
+				{
+					$resultado="Algun dato tenia un valor inadecuado";
+				}
+				include '/var/www/html/server/addlogs.php';
+				//si todos los contenidos cumplen las condiciones entonces podremos añadir el elemento a la base de datos.
+				if ($valid)
+				{	
+					//primero metemos los datos que son obligatorios.
+					$query = "INSERT INTO USUARIOS (DNI,email,pswd,usuario) VALUES ('{$dni}','{$correo}','{$pswd}','{$usuario}')";
+					if ($conexion->query($query) === TRUE) 
+					{
+						//tras haber creado ya la fila con los datos principales vamos comprobando que datos que se pueden quedar vacíos hay puestos.
+						if (isset($nombre))
+						{
+							$query = "UPDATE USUARIOS SET Nombre = '{$nombre}' WHERE usuario = '{$usuario}'";
+							$conexion->query($query);
+						}
+						if (isset($apellido))
+						{
+							$query = "UPDATE USUARIOS SET Apellido = '{$apellido}' WHERE usuario = '{$usuario}'";
+							$conexion->query($query);
+						}
+						if (isset($tlf))
+						{
+							$query = "UPDATE USUARIOS SET Telefono = '{$tlf}' WHERE usuario = '{$usuario}'";
+							$conexion->query($query);
+						}
+						if (isset($fechanac))
+						{
+							$query = "UPDATE USUARIOS SET FechaNcto = '{$fechanac}' WHERE usuario = '{$usuario}'";
+							$conexion->query($query);
+						}
+						if (isset($perfimg))
+						{
+							$query = "UPDATE USUARIOS SET imagen = '{$perfimg}' WHERE usuario = '{$usuario}'";
+							$conexion->query($query);
+						}
+						//para que se pueda ver la imagen en la web tenemos que importarla a donde podamos manejarla.
+						$location = "/var/www/html/public/{$_POST['usr']}.png";
+						move_uploaded_file($_FILES['perfimagen']['tmp_name'], $location);
+						//tras meter toda la información necesaria volvemos a catalogo donde ahora debería aparecer el nuevo vehículo.
+						echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/login/login.php");</script>';
+					}
+				}
+			}
 		}
-	}
+		else
+		{
+			$enviado="POST sin token o primer acceso a la pagina";
+			$resultado="el POST no se ha procesado";
+			include '/var/www/html/server/addlogs.php';
+		}
+		$token = md5(uniqid(rand(),true));
+		$_SESSION['tokenReg'] = $token;
 	?>
 	<style>
         form{
@@ -269,6 +245,7 @@
 
 	<div><span class="error">* campo obligatorio</span></div>
 	<form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
+		<input type="hidden" name="CSRF_token" value="<?php echo $token; ?>">
 		<div>Nombre de usuario:*</div>
 		<input type="text" class="casilla" name="usr" placeholder="Introduzca su nombre de usuario" autofocus>
 		<span class="error"><?php echo $usuarioERR;?></span><br>

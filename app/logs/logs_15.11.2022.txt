@@ -1,0 +1,14 @@
+172.23.0.1-81-registro--November 15, 2022, 8:29 am-POST sin token o primer acceso a la pagina-el POST no se ha procesado
+172.23.0.1-81-registro--November 15, 2022, 10:05 am-POST sin token o primer acceso a la pagina-el POST no se ha procesado
+172.23.0.1-81-registro--November 15, 2022, 10:10 am-POST sin token o primer acceso a la pagina-el POST no se ha procesado
+172.23.0.1-81-registro--November 15, 2022, 10:23 am-POST sin token o primer acceso a la pagina-el POST no se ha procesado
+172.25.0.1-81-registro--November 15, 2022, 10:46 am-POST sin token o primer acceso a la pagina-el POST no se ha procesado
+172.25.0.1-81-registro--November 15, 2022, 10:51 am-POST sin token o primer acceso a la pagina-el POST no se ha procesado
+172.25.0.1-81-registro--November 15, 2022, 11:01 am-POST sin token o primer acceso a la pagina-el POST no se ha procesado
+172.26.0.1-81-login-LechugAsesina45-November 15, 2022, 11:04 am-SELECT * FROM USUARIOS WHERE usuario = 'LechugAsesina45' AND pswd = 'contrasena'-Se ha iniciado sesion
+172.26.0.1-81-modusuario-LechugAsesina45-November 15, 2022, 11:04 am-UPDATE USUARIOS SET Nombre = "" WHERE usuario = "LechugAsesina45"-Se ha actualizado el usuario
+172.26.0.1-81-modusuario-LechugAsesina45-November 15, 2022, 11:05 am-UPDATE USUARIOS SET pswd = "" WHERE usuario = "LechugAsesina45"-Valor incorrecto del dato
+172.26.0.1-81-modusuario-LechugAsesina45-November 15, 2022, 11:05 am-UPDATE USUARIOS SET Nombre = "" WHERE usuario = "LechugAsesina45"-Se ha actualizado el usuario
+172.26.0.1-81-modusuario-LechugAsesina45-November 15, 2022, 11:07 am-UPDATE USUARIOS SET pswd = "XWDuztTj8VCdqMu" WHERE usuario = "LechugAsesina45"-Valor incorrecto del dato
+172.26.0.1-81-modusuario-LechugAsesina45-November 15, 2022, 11:07 am-UPDATE USUARIOS SET Nombre = "Fantasma" WHERE usuario = "LechugAsesina45"-Se ha actualizado el usuario
+172.26.0.1-81-detalles-LechugAsesina45-November 15, 2022, 11:08 am-DELETE FROM COCHES WHERE matricula = 'AABB-46'-Se ha eliminado el coche

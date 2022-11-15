@@ -14,6 +14,10 @@
 </head>
 
 <body>
+    <?php
+        $token = md5(uniqid(rand(),true));
+	    $_SESSION['tokenLogin'] = $token;
+    ?>
     <style>
         .login{
             font-weight: bold;
@@ -35,6 +39,7 @@
         </div>
     </div>
     <form action="/server/login.php" method="post">
+        <input type="hidden" name="CSRF_token" value="<?php echo $token; ?>">
         <input type="text" name="usuario" placeholder="Usuario"><br>
         <input type="password" name="contrasena" placeholder="Contraseña"><br><br>
         <input type="submit" value="Log in">

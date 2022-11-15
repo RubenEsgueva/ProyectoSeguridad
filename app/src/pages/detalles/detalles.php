@@ -39,8 +39,11 @@
         {
             echo '<br> Precio: '.$row['precio'];
         }
+        $token = md5(uniqid(rand(),true));
+		$_SESSION['tokenBorr'] = $token;
     ?>
     <form action="/server/borrar_coche.php" method="post">
+        <input type="hidden" name="CSRF_token" value="<?php echo $token; ?>">
         <input type="hidden" name="matricula" value="<?php echo $matricula; ?>">
         <input type="hidden" name="usuario" value="<?php echo $usuario; ?>">
         <br><input type="submit" class="boton_borrar" value="Borrar Vehículo">
