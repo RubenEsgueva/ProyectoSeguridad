@@ -17,6 +17,10 @@
     {
         if (!empty($value)) {
             $value = test_input($value);
+            if ($key === 'pswd')
+            {
+                $value = password_hash($value,PASSWORD_DEFAULT);
+            }
             $usuario = $_SESSION['usuario'];
             $query = 'UPDATE USUARIOS SET '.$key.' = "'.$value.'" WHERE usuario = "'.$usuario.'"';
             $enviado = $query;
