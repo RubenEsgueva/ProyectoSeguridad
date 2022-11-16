@@ -72,6 +72,10 @@
 						$contrasena2ERR = "Las contraseñas no coinciden.";
 						$valid = false;
 					}
+					else
+					{
+						$pswd = password_hash($pswd,PASSWORD_DEFAULT);
+					}
 				}
 			}
 			
@@ -175,12 +179,12 @@
 				if ($valid)
 				{
 					$resultado="Se ha anadido correctamente";
+					$valid=TRUE;
 				}
 				else
 				{
 					$resultado="Algun dato tenia un valor inadecuado";
 				}
-				include '/var/www/html/server/addlogs.php';
 				//si todos los contenidos cumplen las condiciones entonces podremos añadir el elemento a la base de datos.
 				if ($valid)
 				{	
@@ -219,6 +223,11 @@
 						move_uploaded_file($_FILES['perfimagen']['tmp_name'], $location);
 						//tras meter toda la información necesaria volvemos a catalogo donde ahora debería aparecer el nuevo vehículo.
 						echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/login/login.php");</script>';
+					}
+					else
+					{
+						$resultado=mysqli_error($conexion);
+						include '/var/www/html/server/addlogs.php';
 					}
 				}
 			}

@@ -17,6 +17,11 @@
     <?php
         $token = md5(uniqid(rand(),true));
 	    $_SESSION['tokenLogin'] = $token;
+        $disable = FALSE;
+        if ($_SESSION['intentos']>3)
+        {
+            $disable = TRUE;
+        }
     ?>
     <style>
         .login{
@@ -42,7 +47,23 @@
         <input type="hidden" name="CSRF_token" value="<?php echo $token; ?>">
         <input type="text" name="usuario" placeholder="Usuario"><br>
         <input type="password" name="contrasena" placeholder="Contraseña"><br><br>
-        <input type="submit" value="Log in">
+        <?php
+            if ($disable)
+            {
+                echo "<h1>Demasiados intentos de Log In, espere un poco para volver a intentarlo.</h1>";
+                echo '<input type="submit" value="Log in" disabled/>';
+                $_SESSION['intentos']=0;
+                echo '<script type="text/javascript">
+                    window.setTimeout(function(){window.location.replace("http://localhost:81/src/pages/login/login.php")},10000);
+                </script>';
+
+                
+            }
+            else
+            {
+                echo '<input type="submit" value="Log in"/>';
+            }
+        ?>
     </form>
 </body>
 
