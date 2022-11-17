@@ -28,6 +28,30 @@
 			return $data;
 		}
 		  
+		function comprobarPSWD($passwd)
+		{
+			if (strlen($passwd) < 8)
+			{
+				$errors[] = "La contraseña es demasiado corta!";
+			}
+		
+			if (!preg_match("#[0-9]+#", $passwd))
+			{
+				$errors[] = "La contraseña debe contener al menos un número!";
+			}
+		
+			if (!preg_match("#[A-Z]+#", $passwd))
+			{
+				$errors[] = "La contraseña debe contener al menos una letra Mayúscula!";
+			}
+			
+			if (!preg_match("#[a-z]+#", $passwd))
+			{
+				$errors[] = "La contraseña debe contener al menos una letra minúscula!";
+			}
+			return ($errors);
+		}
+
 	    $usuarioERR = $perfimg = $contrasenaERR = $contrasena2ERR = $correoERR = $nombreERR = $apellidoERR = $tlfERR = $DNIERR = $fechaERR = "";
 	    $correo = $perfimgERR= $dni = $pswd = $pswd2 = "";
 		$valid = true;
@@ -74,7 +98,19 @@
 					}
 					else
 					{
-						$pswd = password_hash($pswd,PASSWORD_DEFAULT);
+						$lErrores=comprobarPSWD($pswd);
+						if (sizeof($lErrores)>0)
+						{
+							for ($fila = 0; $fila<sizeof($lErrores);$fila++)
+							{
+								$contrasenaERR= $contrasenaERR.$lErrores[$fila]."<br>";
+							}
+							$valid = false;
+						}
+						else
+						{
+							$pswd = password_hash($pswd,PASSWORD_DEFAULT);
+						}
 					}
 				}
 			}
@@ -185,6 +221,7 @@
 				{
 					$resultado="Algun dato tenia un valor inadecuado";
 				}
+				include '/var/www/html/server/addlogs.php';
 				//si todos los contenidos cumplen las condiciones entonces podremos añadir el elemento a la base de datos.
 				if ($valid)
 				{	
