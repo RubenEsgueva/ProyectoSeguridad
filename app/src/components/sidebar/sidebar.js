@@ -35,15 +35,15 @@ cerrar_sidebar_modificar.addEventListener("click", () => {
 });
 
 cerrar_sesion.addEventListener("click", () => {
-    window.location.replace("http://localhost:81/server/close_session.php");
+    window.location.replace("/server/close_session.php");
 });
 
 iniciar_sesion.addEventListener("click", () => {
-    window.location.replace("http://localhost:81/src/pages/login/login.php");
+    window.location.replace("/src/pages/login/login.php");
 });
 
 registrarse.addEventListener("click", () => {
-    window.location.replace("http://localhost:81/src/pages/registro/registro.php");
+    window.location.replace("/src/pages/registro/registro.php");
 });
 
 modificar_datos.addEventListener("click", () => {
