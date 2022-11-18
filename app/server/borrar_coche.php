@@ -1,5 +1,6 @@
 <?php
     session_start();
+    include '/var/www/html/router.php';
     include 'conexion_db.php';
     $matricula = $_POST['matricula'];
     $usuario = $_SESSION['usuario'];
@@ -27,5 +28,5 @@
     }
     include '/var/www/html/server/addlogs.php';
     include 'close_conexion_db.php';
-    echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/catalogo/catalogo.php");</script>';
+    $router->pagesCatalogo(0);
 ?>
