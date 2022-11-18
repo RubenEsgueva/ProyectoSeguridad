@@ -53,11 +53,8 @@
                 echo "<h1>Demasiados intentos de Log In, espere un poco para volver a intentarlo.</h1>";
                 echo '<input type="submit" value="Log in" disabled/>';
                 $_SESSION['intentos']=0;
-                echo '<script type="text/javascript">
-                    window.setTimeout(function(){window.location.replace("http://localhost:81/src/pages/login/login.php")},10000);
-                </script>';
-
-                
+                include '/var/www/html/router.php';
+                $router->pagesLogin(10000);
             }
             else
             {
