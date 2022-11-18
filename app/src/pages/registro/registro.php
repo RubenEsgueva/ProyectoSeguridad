@@ -99,7 +99,7 @@
 					else
 					{
 						$lErrores=comprobarPSWD($pswd);
-						if (sizeof($lErrores)>0)
+						if (!empty($lErrores))
 						{
 							for ($fila = 0; $fila<sizeof($lErrores);$fila++)
 							{
