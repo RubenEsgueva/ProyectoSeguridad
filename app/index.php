@@ -1,5 +1,6 @@
 <?php
-    echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/catalogo/catalogo.php");</script>';
+    include '/var/www/html/router.php';
+    $router->pagesCatalogo(0);
 ?>
 <!DOCTYPE html>
 <html lang="es">
