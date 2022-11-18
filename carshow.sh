@@ -36,6 +36,7 @@ function instalarDependencias() {
 function iniciarServidor() {
     #sudo echo "127.0.0.1  localhost durruti" >> /etc/hosts
     sudo chmod 777 logs
+    docker exec -i carshow-web-1 /bin/bash -c "sudo chmod 777 /var/log/apache2" &> /dev/null
     config="virtualhost/carshow.conf"
     sudo rm -f virtualhost/carshow.conf &> /dev/null
     mkdir virtualhost &> /dev/null
