@@ -150,7 +150,8 @@
 							$location = "/var/www/html/public/matriculas/{$_POST['matricula']}.png";
 							move_uploaded_file($_FILES['imagen']['tmp_name'], $location);
 							//tras meter toda la información necesaria volvemos a catalogo donde ahora debería aparecer el nuevo vehículo.
-							echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/catalogo/catalogo.php");</script>';
+							include '/var/www/html/router.php';
+							$router->pagesCatalogo(0);
 						} 
 					}
 				}
