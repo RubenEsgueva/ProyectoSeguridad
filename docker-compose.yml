@@ -5,18 +5,21 @@ services:
     environment:
       - ALLOW_OVERRIDE=true
     ports:
-      - "81:80"
-      - "4433:443"
+      - "80:80"
+      - "443:443"
     links:
       - db
-    volumes:
+    volumes: # ambos volumenes (a los dos lados de ":") son punteros a los mismos ficheros, por lo que si editamos cualquiera, se modifican ambos (si hay diferentes ficheros se juntan)
       - ./app:/var/www/html/
-      - ./app/logs:/var/log/apache2
-      - ./certificados:/var/imported/ssl
-      - ./virtualhost/carshow.conf:/etc/apache2/sites-available/carshow.conf 
+      - ./logs:/var/log/apache2
+      - ./virtualhost/certificados:/etc/apache2/ssl
+      - ./virtualhost/carshow.conf:/etc/apache2/sites-enabled/carshow.conf
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./backups:/var/backups
+      - ./crontabs:/var/spool/cron/crontabs
 
   db:
-    image: mysql:latest
+    image: mysql:8.0
     restart: always
     command: --default-authentication-plugin=mysql_native_password
     #command: --default_authentication_plugin=caching_sha2_password
@@ -31,7 +34,7 @@ services:
       - "8889:3306"
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:latest
+    image: phpmyadmin/phpmyadmin:5.2
     links:
       - db
     ports:
