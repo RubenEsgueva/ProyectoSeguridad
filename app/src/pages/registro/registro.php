@@ -259,7 +259,8 @@
 						$location = "/var/www/html/public/{$_POST['usr']}.png";
 						move_uploaded_file($_FILES['perfimagen']['tmp_name'], $location);
 						//tras meter toda la información necesaria volvemos a catalogo donde ahora debería aparecer el nuevo vehículo.
-						echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/login/login.php");</script>';
+						include '/var/www/html/router.php';
+             					$router->pagesLogin(0);
 					}
 					else
 					{
