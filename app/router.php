@@ -1,6 +1,5 @@
 <?php
-    $puertoHTTPS=exec("grep 'Redirect' /etc/apache2/sites-enabled/carshow.conf | cut -d ':' -f 3");
-    $host="https://localhost:$puertoHTTPS";
+    $host=exec('grep "Redirect" /etc/apache2/sites-enabled/carshow.conf | sed "s/ *//" | cut -d " " -f 3');
     class router {
         function pagesCatalogo($miliseconds) {
             echo '<script type="text/javascript">
