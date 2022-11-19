@@ -22,7 +22,7 @@ read -p "Opcion: " option
 echo ""
 
 function instalarDependencias() {
-    dependencias="docker docker-compose openssl"
+    dependencias="docker docker-compose openssl cronie"
     ls /bin/pacman &> /dev/null
     if [[ "$?" != "0" ]]; then
         pacman -S $dependencias --noconfirm
@@ -35,8 +35,11 @@ function instalarDependencias() {
 
 function iniciarServidor() {
     #sudo echo "127.0.0.1  localhost durruti" >> /etc/hosts
-    sudo chmod 777 logs
+    mkdir backups &> /dev/null
+    mkdir logs
+    chmod 777 logs
     docker exec -i carshow-web-1 /bin/bash -c "sudo chmod 777 /var/log/apache2" &> /dev/null
+    sudo echo "0 0 * * * $(pwd)/backup.sh" > /var/spool/cron/carshow
     config="virtualhost/carshow.conf"
     sudo rm -f virtualhost/carshow.conf &> /dev/null
     mkdir virtualhost &> /dev/null
@@ -67,7 +70,7 @@ function iniciarServidor() {
         openssl req -new -key virtualhost/certificados/llave.key -out virtualhost/certificados/servidor.csr
         openssl x509 -req -days 365 -in virtualhost/certificados/servidor.csr -signkey virtualhost/certificados/llave.key -out virtualhost/certificados/certificado.crt
     fi
-    chmod +x backups/backup.sh &> /dev/null
+    chmod +x backup.sh &> /dev/null
     sudo systemctl start docker
     docker build -t="carshow" .
     docker-compose up -d
@@ -84,7 +87,7 @@ function iniciarServidor() {
 function apagarServidor() {
     #grep -v "127.0.0.1  localhost durruti" /etc/hosts > tmp.txt
     #sudo mv tmp.txt /etc/hosts
-    chmod -x backups/backup.sh &> /dev/null
+    chmod -x backup.sh &> /dev/null
     docker-compose down
     rm -rf mysql 2&> /dev/null
 }
@@ -136,7 +139,7 @@ function inicializarBaseDeDatos() {
 }
 
 function configurarCron() {
-    nano crontabs
+    nano /var/spool/cron/carshow
 }
 
 function mostrarLogs() {
