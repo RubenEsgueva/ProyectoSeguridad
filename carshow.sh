@@ -11,64 +11,88 @@ echo -e "\t[2] Iniciar el servidor."
 echo -e "\t[3] Apagar el servidor."
 echo -e "\t[4] Reiniciar el servidor."
 echo -e "\t[5] Mostrar el estado de los servicios de la web."
-echo -e "\t[6] Obtener una shell del codigo fuente."
-echo -e "\t[7] Obtener una shell de la base de datos mysql."
-echo -e "\t[8] Inicializar la base de datos mysql."
-echo -e "\t[9] Configurar cron para realizar backups."
-echo -e "\t[10] Mostrar logs del servidor web."
+echo -e "\t[6] Imprimir logs de docker de una imagen o servicio (si hay algún error y no se monta)"
+echo -e "\t[7] Obtener una shell del codigo fuente."
+echo -e "\t[8] Obtener una shell de la base de datos mysql."
+echo -e "\t[9] Inicializar la base de datos mysql."
+echo -e "\t[10] Configurar cron para realizar backups."
+echo -e "\t[11] Mostrar logs del servidor web."
 echo ""
 read -p "Opcion: " option
 echo ""
 
 function instalarDependencias() {
-    sudo apt install docker docker-compose apache2 openssl -y
+    dependencias="docker docker-compose openssl cronie"
+    ls /bin/pacman &> /dev/null
+    if [[ "$?" != "0" ]]; then
+        pacman -S $dependencias --noconfirm
+    fi
+    ls /bin/apt &> /dev/null
+    if [[ "$?" != "0" ]]; then
+        apt install $dependencias -y
+    fi
 }
 
 function iniciarServidor() {
-    sudo chmod 777 app/logs
-    sudo a2enmod ssl
-    /bin/cat certificados/certificado.crt &> /dev/null
+    #sudo echo "127.0.0.1  localhost durruti" >> /etc/hosts
+    mkdir backups &> /dev/null
+    mkdir logs &> /dev/null
+    chmod 777 logs &> /dev/null
+    docker exec -i carshow-web-1 /bin/bash -c "sudo chmod 777 /var/log/apache2" &> /dev/null
+    cat crontabs &> /dev/null
     if [[ "$?" != "0" ]]; then
-        mkdir certificados &> /dev/null
-        sudo openssl genrsa -out certificados/llave.key 2048
-        sudo openssl req -new -key certificados/llave.key -out certificados/servidor.csr
-        sudo openssl x509 -req -days 365 -in certificados/servidor.csr -signkey certificados/llave.key -out certificados/certificado.crt
+        echo "0 0 * * * $(pwd)/backup.sh" > crontabs
     fi
+    cp crontabs > /var/spool/cron/carshow &> /dev/null
     config="virtualhost/carshow.conf"
-    rm virtualhost/carshow.conf
-    sudo sh -c 'echo "<VirtualHost *:80>" >> '$config
-    sudo sh -c 'echo "      Redirect / https://'$(curl ifconfig.me)'" >> '$config
-    sudo sh -c 'echo "</VirtualHost>" >> '$config
-    sudo sh -c 'echo "" >> '$config
-    sudo sh -c 'echo "<VirtualHost *:443>" >> '$config
-    sudo sh -c 'echo "      SSLEngine on" >> '$config
-    sudo sh -c 'echo "      SSLCertificateFile certificados/certificado.crt" >> '$config
-    sudo sh -c 'echo "      SSLCertificateKeyFile certificados/llave.key" >> '$config
-    sudo sh -c 'echo "      SSLCertificateChainFile certificados/server.csr" >> '$config
-    sudo sh -c 'echo "      ServerAdmin example@localhost.com" >> '$config
-    sudo sh -c 'echo "      <Directory /var/www/html/>" >> '$config
-    sudo sh -c 'echo "              AllowOverride all" >> '$config
-    sudo sh -c 'echo "      </Directory>" >> '$config
-    sudo sh -c 'echo "      DocumentRoot /var/www/html/" >> '$config
-    sudo sh -c 'echo "      ErrorLog /var/log/apache2/error.log" >> '$config
-    sudo sh -c 'echo "      LogLevel warn" >> '$config
-    sudo sh -c 'echo "      CustomLog /var/log/apache2/error.log combined" >> '$config
-    sudo sh -c 'echo "</VirtualHost>" >> '$config
-    chmod +x backup.sh
+    sudo rm -f virtualhost/carshow.conf &> /dev/null
+    mkdir virtualhost &> /dev/null
+    echo "<VirtualHost *:80>" >> $config
+    #echo "      Redirect / https://'$(curl ifconfig.me)'" >> $config
+    echo "      Redirect / https://localhost:443" >> $config
+    echo "</VirtualHost>" >> $config
+    echo "" >> $config
+    echo "<VirtualHost *:443>" >> $config
+    echo "      SSLEngine on" >> $config
+    echo "      SSLCertificateFile /etc/apache2/ssl/certificado.crt" >> $config
+    echo "      SSLCertificateKeyFile /etc/apache2/ssl/llave.key" >> $config
+    echo "      SSLCertificateChainFile /etc/apache2/ssl/servidor.csr" >> $config
+    #echo "      SSLCACertificateFile /etc/apache2/ssl/certificado.ca" >> $config
+    echo "      ServerAdmin example@localhost.com" >> $config
+    echo "      <Directory /var/www/html/>" >> $config
+    echo "              AllowOverride all" >> $config
+    echo "      </Directory>" >> $config
+    echo "      DocumentRoot /var/www/html/" >> $config
+    echo "      ErrorLog /var/log/apache2/error.log" >> $config
+    echo "      LogLevel warn" >> $config
+    echo "      CustomLog /var/log/apache2/error.log combined" >> $config
+    echo "</VirtualHost>" >> $config
+    /bin/cat virtualhost/certificados/certificado.crt &> /dev/null
+    if [[ "$?" != "0" ]]; then
+        mkdir virtualhost/certificados &> /dev/null
+        openssl genrsa -out virtualhost/certificados/llave.key 2048
+        openssl req -new -key virtualhost/certificados/llave.key -out virtualhost/certificados/servidor.csr
+        openssl x509 -req -days 365 -in virtualhost/certificados/servidor.csr -signkey virtualhost/certificados/llave.key -out virtualhost/certificados/certificado.crt
+    fi
+    chmod +x backup.sh &> /dev/null
     sudo systemctl start docker
     docker build -t="carshow" .
     docker-compose up -d
     docker container ls &> /dev/null
     inicializarBaseDeDatos
     usuario="www-data"
-    docker exec -i carshow_web_1 /bin/bash -c "chown $usuario:$usuario /var/www/html/public" &> /dev/null
-    docker exec -i carshow_web_1 /bin/bash -c "chmod -R 0755 /var/www/html/public" &> /dev/null
-    echo -e "\n[OK] Todo listo, visita la siguiente direccion en tu navegador: http://"$(curl ifconfig.me)":80/index.php"
-    #firefox "http://localhost:81/index.php"
+    docker exec -i carshow-web-1 /bin/bash -c "chown $usuario:$usuario /var/www/html/public" &> /dev/null
+    docker exec -i carshow-web-1 /bin/bash -c "chmod -R 0755 /var/www/html/public" &> /dev/null
+    echo -e "\n[OK] Todo listo, visita la siguiente direccion en tu navegador:" 
+    echo -e "\t[*] http://localhost:80"
+    echo -e "\t[*] https://localhost:443"
 }
 
 function apagarServidor() {
-    chmod -x backup.sh
+    #grep -v "127.0.0.1  localhost durruti" /etc/hosts > tmp.txt
+    #sudo mv tmp.txt /etc/hosts
+    rm -f /var/spool/cron/carshow
+    chmod -x backup.sh &> /dev/null
     docker-compose down
     rm -rf mysql 2&> /dev/null
 }
@@ -81,8 +105,28 @@ function estadoServiciosDocker() {
     docker-compose ps
 }
 
+function imprimirLogsDocker() {
+    docker-compose ps | cut -d " " -f 1 | grep -v "NAME" > tmp.txt
+    echo "Elige numero de la imagen de la que quieras imprimir los logs: "
+    count="1"
+    while read -r line; do
+        echo -e "\t[$count] $line"
+        count=$(($count+1))
+    done < tmp.txt
+    echo "El if esta roto"
+    read -p "Numero: " num
+    if [[ "$num" -lt "$count" && "$num" -gt "0" ]]; then
+        imagen="$(head -n $num tmp.txt | tail -n 1)"
+        echo ""
+        sudo docker logs $imagen
+    else
+        echo "$num no vale"
+    fi
+    rm tmp.txt
+}
+
 function obtenerShellCodigoFuente() {
-    docker exec -it carshow_web_1 /bin/bash
+    docker exec -it carshow-web-1 /bin/bash
 }
 
 function obtenerShellMysql() {
@@ -100,11 +144,26 @@ function inicializarBaseDeDatos() {
 }
 
 function configurarCron() {
-    crontab -e
+    nano crontabs
 }
 
 function mostrarLogs() {
-    echo "Todavía no está implementado visualizar los logs..."
+    docker exec -i carshow-web-1 /bin/bash -c "ls /var/log/apache2" > tmp.txt
+    echo "Elige numero que quieras imprimir los logs: "
+    count="1"
+    while read -r line; do
+        echo -e "\t[$count] $line"
+        count=$(($count+1))
+    done < tmp.txt
+    read -p "Numero: " num
+    if [[ "$num" -lt "$count" && "$num" -gt "0" ]]; then
+        logfile="$(head -n $num tmp.txt | tail -n 1)"
+        echo ""
+        docker exec -i carshow-web-1 /bin/bash -c "cat /var/log/apache2/$logfile"
+    else
+        echo "$num no vale"
+    fi
+    rm tmp.txt
 }
 
 case $option in
@@ -113,11 +172,12 @@ case $option in
     3) apagarServidor;;
     4) reiniciarServidor;;
     5) estadoServiciosDocker;;
-    6) obtenerShellCodigoFuente;;
-    7) obtenerShellMysql;;
-    8) inicializarBaseDeDatos;;
-    9) configurarCron;;
-    10) mostrarLogs;;
+    6) imprimirLogsDocker;;
+    7) obtenerShellCodigoFuente;;
+    8) obtenerShellMysql;;
+    9) inicializarBaseDeDatos;;
+    10) configurarCron;;
+    11) mostrarLogs;;
     *) echo "Opcion no valida";;
 esac
 
