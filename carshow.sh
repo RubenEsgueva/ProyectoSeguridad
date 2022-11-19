@@ -148,6 +148,7 @@ function inicializarBaseDeDatos() {
 
 function configurarCron() {
     nano crontabs
+    cp crontabs /var/spool/cron/carshow &> /dev/null
 }
 
 function mostrarLogs() {
