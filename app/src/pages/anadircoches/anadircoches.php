@@ -1,5 +1,10 @@
 <?php 
     session_start();
+	if (empty($_SESSION['usuario']))
+	{
+		include '/var/www/html/router.php';
+		$router->pagesCatalogo(0);
+	}
 ?>
 
 <!DOCTYPE html>
@@ -16,22 +21,15 @@
 	<?php
 		//este archivo y registro.php cumplen una función muy similar por lo que en su mayoría será la misma explicación.
 		//para guardar datos hace falta conectarse a la base de datos.
-		$hostname = "db";
-		$username = "admin";
-		$password = "admin1234";
-		$db = "COCHES";
-	
-		$conexion = mysqli_connect($hostname, $username, $password, $db);
-		if ($conexion->connect_error)
-		{
-			die("Database connection failed: " . $conexion->connect_error);
-		}
+		include '../../../server/conexion_db.php';
+		$origen= "anadircoches";
 		//este es un metodo de seguridad, obtenido de: https://www.w3schools.com/php/php_form_validation.asp
 		function test_input($data)
 		{
 			$data = trim($data);
 			$data = stripslashes($data);
 			$data = htmlspecialchars($data);
+			//$data = mysqli_real_escape_string($conexion, $data);
 			return $data;
 		}
 
@@ -39,139 +37,143 @@
 		$modelERR = $matERR = $estadoERR = $imgERR = $kmERR = $precioERR = $bdERR = "";
 		$valido = true;
 		//Cada vez que se pulse el boton de confirmar habrá que comprobar el contenido de cada casilla.
-		if ($_SERVER["REQUEST_METHOD"] == "POST") 
-		{
-			if (empty($_POST["model"]))
-	    	{
-	    		$modelERR = "Es necesario indicar el modelo del vehículo.";
-				$valido = false;
-	    	}
-			else
+		if ($_SERVER["REQUEST_METHOD"] == "POST" and $_POST['CSRF_token'] == $_SESSION['tokenAna']) 
 			{
-				$modelo = test_input($_POST["model"]);
-			}
-
-			if (empty($_POST["platenum"]))
-	    	{
-	    		$matERR = "Es necesario indicar la matrícula del vehículo.";
-				$valido = false;
-	    	}
-			else
-			{
-				$matricula = test_input($_POST["platenum"]);
-				$query = "SELECT * FROM COCHES WHERE matricula = '{$matricula}'";
-				$resultado = mysqli_query($conexion,$query);
-				if ($resultado->num_rows > 0) 
+				if (empty($_POST["model"]))
 				{
-					$matERR = "La matrícula ya está registrada.";
+					$modelERR = "Es necesario indicar el modelo del vehículo.";
 					$valido = false;
 				}
-				elseif (!preg_match("/^[a-zA-Z0-9]*$/",$matricula))
+				else
 				{
-					$matERR = "La matrícula no puede incluir espacios o caracteres especiales.";
+					$modelo = test_input($_POST["model"]);
+				}
+	
+				if (empty($_POST["platenum"]))
+				{
+					$matERR = "Es necesario indicar la matrícula del vehículo.";
 					$valido = false;
 				}
-			}
-
-			if (empty($_POST["imagen"]))
-	    	{
-	    		$imgERR = "Para verlo en el catálogo es necesario adjuntar una imagen.";
-				$valido = false;
-	    	}
-			else
-			{
-				$exten_permit = array("jpg","jpeg","png","gif");
-				$imagen = test_input($_POST["imagen"]);
-				$exten_img = pathinfo($imagen, PATHINFO_EXTENSION);
-	    		if (!in_array($exten_img, $exten_permit))
-	    		{
-	    		    $imgERR = "El archivo adjuntado no tiene una extensión válida.";
-					$valido = false;
-	    		}
-			}
-
-			if (empty($_POST["status"]))
-	    	{
-	    		$estadoERR = "Por favor especifique el estado del vehículo.";
-				$valido = false;
-	    	}
-			else
-			{
-				$estado = test_input($_POST["status"]);
-			}
-
-			if (!empty($_POST["km"]))
-	    	{
-	    		$kmtraje = test_input($_POST["km"]);
-	    		if (!preg_match("/^[0-9]*$/",$kmtraje))
-	    		{
-	    		    $kmERR = "Por favor exprese el kilometraje en números enteros.";
-					$valido = false;
-	    		}
-	    	}
-
-			if (!empty($_POST["price"]))
-	    	{
-	    		$precio = test_input($_POST["price"]);
-	    		if (!preg_match("/^[0-9]*\.[0-9]{2}$/",$precio))
-	    		{
-	    		    $precioERR = "Utilize el formato 9999.99 por favor.";
-					$valido = false;
-	    		}
-	    	}
-			//si todos los contenidos cumplen las condiciones entonces podremos añadir el elemento a la base de datos.
-			if ($valido)
-			{
-				//primero metemos los datos que son obligatorios.
-				$usuario = $_SESSION['usuario'];
-				$dist = intval($kmtraje);
-				$query = "INSERT INTO COCHES (matricula,modelo,usuario,estado,imagen) VALUES ('{$matricula}', '{$modelo}', '{$usuario}', '{$estado}', '{$imagen}')";
-				if ($conexion->query($query) === TRUE) 
+				else
 				{
-					//tras haber creado ya la fila con los datos principales vamos comprobando que datos que se pueden quedar vacíos hay puestos.
-					if (isset($precio))
+					$matricula = test_input($_POST["platenum"]);
+					$query = "SELECT * FROM COCHES WHERE matricula = '{$matricula}'";
+					$resultado = mysqli_query($conexion,$query);
+					if ($resultado->num_rows > 0) 
 					{
-						$query = "UPDATE COCHES SET precio = '{$precio}' WHERE matricula = '{$matricula}'";
+						$matERR = "La matrícula ya está registrada.";
+						$valido = false;
+					}
+					elseif (!preg_match("/^[a-zA-Z0-9]*$/",$matricula))
+					{
+						$matERR = "La matrícula no puede incluir espacios o caracteres especiales.";
+						$valido = false;
+					}
+				}
+	
+				if (empty($_POST["imagen"]))
+				{
+					$imgERR = "Para verlo en el catálogo es necesario adjuntar una imagen.";
+					$valido = false;
+				}
+				else
+				{
+					$exten_permit = array("jpg","jpeg","png","gif");
+					$imagen = test_input($_POST["imagen"]);
+					$exten_img = pathinfo($imagen, PATHINFO_EXTENSION);
+					if (!in_array($exten_img, $exten_permit))
+					{
+						$imgERR = "El archivo adjuntado no tiene una extensión válida.";
+						$valido = false;
+					}
+				}
+	
+				if (empty($_POST["status"]))
+				{
+					$estadoERR = "Por favor especifique el estado del vehículo.";
+					$valido = false;
+				}
+				else
+				{
+					$estado = test_input($_POST["status"]);
+				}
+	
+				if (!empty($_POST["km"]))
+				{
+					$kmtraje = test_input($_POST["km"]);
+					if (!preg_match("/^[0-9]*$/",$kmtraje))
+					{
+						$kmERR = "Por favor exprese el kilometraje en números enteros.";
+						$valido = false;
+					}
+				}
+	
+				if (!empty($_POST["price"]))
+				{
+					$precio = test_input($_POST["price"]);
+					if (!preg_match("/^[0-9]*\.[0-9]{2}$/",$precio))
+					{
+						$precioERR = "Utilize el formato 9999.99 por favor.";
+						$valido = false;
+					}
+				}
+				//si todos los contenidos cumplen las condiciones entonces podremos añadir el elemento a la base de datos.
+				if (empty($modelo) and empty($kilometraje) and empty($precio) and empty($matricula) and empty($imagen) and empty($estado))
+				{
+
+				}
+				else
+				{
+					$usuario = $_SESSION['usuario'];
+					$enviado="INSERT INTO COCHES VALUES ('{$matricula}', '{$modelo}', '{$usuario}', '{$estado}', '{$kilometraje}', '{$precio}', '{$imagen}')";
+					if ($valido)
+					{
+						$resultado="Se ha anadido correctamente";
+					}
+					else
+					{
+						$resultado="Algun dato tenia un valor inadecuado";
+					}
+					include '/var/www/html/server/addlogs.php';
+					if ($valido)
+					{
+						//primero metemos los datos que son obligatorios.
+						$dist = intval($kmtraje);
+						$query = "INSERT INTO COCHES (matricula,modelo,usuario,estado,imagen) VALUES ('{$matricula}', '{$modelo}', '{$usuario}', '{$estado}', '{$imagen}')";
 						if ($conexion->query($query) === TRUE) 
 						{
-							echo "DATABASE UPDATED SUCCESFULLY";
-						}
-						else
-						{
-							echo "Error: " . $query . "<br>" . $conexion->error;
-						}
+							//tras haber creado ya la fila con los datos principales vamos comprobando que datos que se pueden quedar vacíos hay puestos.
+							if (isset($precio))
+							{
+								$query = "UPDATE COCHES SET precio = '{$precio}' WHERE matricula = '{$matricula}'";
+							}
+							if (isset($kmtraje))
+							{
+								$query = "UPDATE COCHES SET kilometraje = '{$kmtraje}' WHERE matricula = '{$matricula}'";
+							}
+							//para que se pueda ver la imagen en la web tenemos que importarla a donde podamos manejarla.
+							$location = "/var/www/html/public/matriculas/{$_POST['matricula']}.png";
+							move_uploaded_file($_FILES['imagen']['tmp_name'], $location);
+							//tras meter toda la información necesaria volvemos a catalogo donde ahora debería aparecer el nuevo vehículo.
+							include '/var/www/html/router.php';
+							$router->pagesCatalogo(0);
+						} 
 					}
-					if (isset($kmtraje))
-					{
-						$query = "UPDATE COCHES SET kilometraje = '{$kmtraje}' WHERE matricula = '{$matricula}'";
-						if ($conexion->query($query) === TRUE) 
-						{
-							echo "DATABASE UPDATED SUCCESFULLY";
-						}
-						else
-						{
-							echo "Error: " . $query . "<br>" . $conexion->error;
-						}
-					}
-					//para que se pueda ver la imagen en la web tenemos que importarla a donde podamos manejarla.
-					$location = "/var/www/html/public/matriculas/{$_POST['matricula']}.png";
-					if (move_uploaded_file($_FILES['imagen']['tmp_name'], $location)) {
-						echo 'Imagen guardada correctamente';
-					} else {
-						echo 'Error';
-					}
-					//tras meter toda la información necesaria volvemos a catalogo donde ahora debería aparecer el nuevo vehículo.
-					echo '<script type="text/javascript">window.location.replace("http://localhost:81/src/pages/catalogo/catalogo.php");</script>';
-				} 
-				else 
-				{
-					echo "Error: " . $query . "<br>" . $conexion->error;
 				}
-			}
+				
 		}
+		else
+		{
+			$enviado="POST sin token o primer acceso a la pagina";
+			$resultado="el POST no se ha procesado";
+			include '/var/www/html/server/addlogs.php';
+		}
+		$token = md5(uniqid(rand(),true));
+		$_SESSION['tokenAna'] = $token;
 	?>
 	<div><span class="error">* campo obligatorio</span></div>
 	<form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
+		<input type="hidden" name="CSRF_token" value="<?php echo $token; ?>">
 		<div>Modelo:*</div>
 		<input type="text" class="casilla" name="model" placeholder="Ej.: Batmóvil 2016" autofocus>
 		<span class="error"><?php echo $modelERR;?></span><br>
