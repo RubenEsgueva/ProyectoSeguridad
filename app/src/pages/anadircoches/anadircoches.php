@@ -1,5 +1,10 @@
 <?php 
     session_start();
+	if (empty($_SESSION['usuario']))
+	{
+		include '/var/www/html/router.php';
+		$router->pagesCatalogo(0);
+	}
 ?>
 
 <!DOCTYPE html>
@@ -119,6 +124,7 @@
 				}
 				else
 				{
+					$usuario = $_SESSION['usuario'];
 					$enviado="INSERT INTO COCHES VALUES ('{$matricula}', '{$modelo}', '{$usuario}', '{$estado}', '{$kilometraje}', '{$precio}', '{$imagen}')";
 					if ($valido)
 					{
@@ -132,7 +138,6 @@
 					if ($valido)
 					{
 						//primero metemos los datos que son obligatorios.
-						$usuario = $_SESSION['usuario'];
 						$dist = intval($kmtraje);
 						$query = "INSERT INTO COCHES (matricula,modelo,usuario,estado,imagen) VALUES ('{$matricula}', '{$modelo}', '{$usuario}', '{$estado}', '{$imagen}')";
 						if ($conexion->query($query) === TRUE) 
