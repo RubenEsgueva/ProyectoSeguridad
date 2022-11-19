@@ -58,7 +58,7 @@
         <span class="error"><?php echo $anadirERR;?></span><br>
     </form>
 
-    <php
+    <?php
         if ($disable)
         {
             echo "<h1>Demasiados intentos de Log In, espere un poco para volver a intentarlo.</h1>";
