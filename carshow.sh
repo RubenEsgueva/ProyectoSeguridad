@@ -36,8 +36,8 @@ function instalarDependencias() {
 function iniciarServidor() {
     #sudo echo "127.0.0.1  localhost durruti" >> /etc/hosts
     mkdir backups &> /dev/null
-    mkdir logs
-    chmod 777 logs
+    mkdir logs &> /dev/null
+    chmod 777 logs &> /dev/null
     docker exec -i carshow-web-1 /bin/bash -c "sudo chmod 777 /var/log/apache2" &> /dev/null
     cat crontabs &> /dev/null
     if [[ "$?" != "0" ]]; then
