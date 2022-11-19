@@ -21,12 +21,13 @@ echo -e "\t[8] Obtener una shell de la base de datos mysql."
 echo -e "\t[9] Inicializar la base de datos mysql."
 echo -e "\t[10] Configurar cron para realizar backups."
 echo -e "\t[11] Mostrar logs del servidor web."
+echo -e "\t[12] Generar dominio demo con Ngrok"
 echo ""
 read -p "Opcion: " option
 echo ""
 
 function instalarDependencias() {
-    dependencias="docker docker-compose openssl cronie"
+    dependencias="docker docker-compose openssl cronie ngrok"
     ls /bin/pacman &> /dev/null
     if [[ "$?" != "0" ]]; then
         pacman -S $dependencias --noconfirm
@@ -171,6 +172,12 @@ function mostrarLogs() {
     rm tmp.txt
 }
 
+function ngrokDemo() {
+    read -p "Token de ngrok: " token
+    ngrok authtoken $token
+    ngrok http $puertoHTTP
+}
+
 case $option in
     1) instalarDependencias;;
     2) iniciarServidor;;
@@ -183,6 +190,7 @@ case $option in
     9) inicializarBaseDeDatos;;
     10) configurarCron;;
     11) mostrarLogs;;
+    12) ngrokDemo;;
     *) echo "Opcion no valida";;
 esac
 
