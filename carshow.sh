@@ -52,7 +52,7 @@ function iniciarServidor() {
     echo "      Redirect / https://localhost:443" >> $config
     echo "</VirtualHost>" >> $config
     echo "" >> $config
-    echo "<VirtualHost *:443>" >> $config
+    echo "<VirtualHost *:444>" >> $config
     echo "      SSLEngine on" >> $config
     echo "      SSLCertificateFile /etc/apache2/ssl/certificado.crt" >> $config
     echo "      SSLCertificateKeyFile /etc/apache2/ssl/llave.key" >> $config
@@ -84,8 +84,8 @@ function iniciarServidor() {
     docker exec -i carshow-web-1 /bin/bash -c "chown $usuario:$usuario /var/www/html/public" &> /dev/null
     docker exec -i carshow-web-1 /bin/bash -c "chmod -R 0755 /var/www/html/public" &> /dev/null
     echo -e "\n[OK] Todo listo, visita la siguiente direccion en tu navegador:" 
-    echo -e "\t[*] http://localhost:80"
-    echo -e "\t[*] https://localhost:443"
+    echo -e "\t[*] http://localhost:81"
+    echo -e "\t[*] https://localhost:444"
 }
 
 function apagarServidor() {
