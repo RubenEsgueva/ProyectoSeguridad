@@ -49,7 +49,7 @@ function iniciarServidor() {
     mkdir virtualhost &> /dev/null
     echo "<VirtualHost *:80>" >> $config
     #echo "      Redirect / https://'$(curl ifconfig.me)'" >> $config
-    echo "      Redirect / https://localhost:443" >> $config
+    echo "      Redirect / https://localhost:444" >> $config
     echo "</VirtualHost>" >> $config
     echo "" >> $config
     echo "<VirtualHost *:443>" >> $config
@@ -84,8 +84,8 @@ function iniciarServidor() {
     docker exec -i carshow-web-1 /bin/bash -c "chown $usuario:$usuario /var/www/html/public" &> /dev/null
     docker exec -i carshow-web-1 /bin/bash -c "chmod -R 0755 /var/www/html/public" &> /dev/null
     echo -e "\n[OK] Todo listo, visita la siguiente direccion en tu navegador:" 
-    echo -e "\t[*] http://localhost:80"
-    echo -e "\t[*] https://localhost:443"
+    echo -e "\t[*] http://localhost:81"
+    echo -e "\t[*] https://localhost:444"
 }
 
 function apagarServidor() {
