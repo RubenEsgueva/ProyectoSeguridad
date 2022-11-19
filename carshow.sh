@@ -1,5 +1,8 @@
 #!/bin/bash
 
+puertoHTTP="81"
+puertoHTTPS="444"
+
 if [[ "$(whoami)" != "root" ]]; then
     echo -e "[!] Error: Debes ejecutar el script como usuario root. \"sudo ./init.sh\""
     exit 1
@@ -43,13 +46,13 @@ function iniciarServidor() {
     if [[ "$?" != "0" ]]; then
         echo "0 0 * * * $(pwd)/backup.sh" > crontabs
     fi
-    cp crontabs > /var/spool/cron/carshow &> /dev/null
+    cp crontabs /var/spool/cron/carshow &> /dev/null
     config="virtualhost/carshow.conf"
     sudo rm -f virtualhost/carshow.conf &> /dev/null
     mkdir virtualhost &> /dev/null
     echo "<VirtualHost *:80>" >> $config
     #echo "      Redirect / https://'$(curl ifconfig.me)'" >> $config
-    echo "      Redirect / https://localhost:444" >> $config
+    echo "      Redirect / https://localhost:$puertoHTTPS" >> $config
     echo "</VirtualHost>" >> $config
     echo "" >> $config
     echo "<VirtualHost *:443>" >> $config
@@ -84,8 +87,8 @@ function iniciarServidor() {
     docker exec -i carshow-web-1 /bin/bash -c "chown $usuario:$usuario /var/www/html/public" &> /dev/null
     docker exec -i carshow-web-1 /bin/bash -c "chmod -R 0755 /var/www/html/public" &> /dev/null
     echo -e "\n[OK] Todo listo, visita la siguiente direccion en tu navegador:" 
-    echo -e "\t[*] http://localhost:81"
-    echo -e "\t[*] https://localhost:444"
+    echo -e "\t[*] http://localhost:$puertoHTTP"
+    echo -e "\t[*] https://localhost:$puertoHTTPS"
 }
 
 function apagarServidor() {
