@@ -1,5 +1,6 @@
 <?php
-    $host="https://localhost:444";
+    $puertoHTTPS=exec("grep 'Redirect' /etc/apache2/sites-enabled/carshow.conf | cut -d ':' -f 3");
+    $host="https://localhost:$puertoHTTPS";
     class router {
         function pagesCatalogo($miliseconds) {
             echo '<script type="text/javascript">
