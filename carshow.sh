@@ -39,7 +39,11 @@ function iniciarServidor() {
     mkdir logs
     chmod 777 logs
     docker exec -i carshow-web-1 /bin/bash -c "sudo chmod 777 /var/log/apache2" &> /dev/null
-    sudo echo "0 0 * * * $(pwd)/backup.sh" > /var/spool/cron/carshow
+    cat crontabs &> /dev/null
+    if [[ "$?" != "0" ]]; then
+        echo "0 0 * * * $(pwd)/backup.sh" > crontabs
+    fi
+    cp crontabs > /var/spool/cron/carshow &> /dev/null
     config="virtualhost/carshow.conf"
     sudo rm -f virtualhost/carshow.conf &> /dev/null
     mkdir virtualhost &> /dev/null
@@ -87,6 +91,7 @@ function iniciarServidor() {
 function apagarServidor() {
     #grep -v "127.0.0.1  localhost durruti" /etc/hosts > tmp.txt
     #sudo mv tmp.txt /etc/hosts
+    rm -f /var/spool/cron/carshow
     chmod -x backup.sh &> /dev/null
     docker-compose down
     rm -rf mysql 2&> /dev/null
@@ -139,7 +144,7 @@ function inicializarBaseDeDatos() {
 }
 
 function configurarCron() {
-    nano /var/spool/cron/carshow
+    nano crontabs
 }
 
 function mostrarLogs() {
