@@ -49,10 +49,10 @@ function iniciarServidor() {
     mkdir virtualhost &> /dev/null
     echo "<VirtualHost *:80>" >> $config
     #echo "      Redirect / https://'$(curl ifconfig.me)'" >> $config
-    echo "      Redirect / https://localhost:443" >> $config
+    echo "      Redirect / https://localhost:444" >> $config
     echo "</VirtualHost>" >> $config
     echo "" >> $config
-    echo "<VirtualHost *:444>" >> $config
+    echo "<VirtualHost *:443>" >> $config
     echo "      SSLEngine on" >> $config
     echo "      SSLCertificateFile /etc/apache2/ssl/certificado.crt" >> $config
     echo "      SSLCertificateKeyFile /etc/apache2/ssl/llave.key" >> $config
